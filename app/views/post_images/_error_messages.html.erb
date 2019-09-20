@@ -1,0 +1,10 @@
+<div>
+  <% if @post_image.errors.any? %>
+  <p><%= "#{@post_image.errors.count}件の入力ミスがあります。" %></p>
+    <% @post_image.errors.full_messages.each do |message| %>
+      <ul>
+        <li><%= message %></li>
+      </ul>
+    <% end %>
+  <% end %>
+</div>

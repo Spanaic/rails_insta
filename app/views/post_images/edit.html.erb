@@ -1,0 +1,16 @@
+<h1>投稿編集</h1>
+
+<%= form_for(@post_image) do |f| %>
+    <%= render "post_images/error_messages", post_image: @post_image %>
+
+    <p>現在の画像はこちら</p>
+    <%= attachment_image_tag @post_image, :post_image, :fill, 480, 270 %>
+
+    <p>画像を変更しよう！</p>
+    <%= f.attachment_field :post_image %>
+
+    <p>変更した画像について教えてくれる？</p>
+    <%= f.text_area :caption, placeholder: "#{@post_image.caption}" %>
+
+    <%= f.submit "変更完了！" %>
+<% end %>

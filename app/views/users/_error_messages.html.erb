@@ -1,0 +1,10 @@
+<div>
+  <% if user.errors.any? %>
+  <p><%= "#{user.errors.count}件の入力ミスがあります。" %></p>
+    <% user.errors.full_messages.each do |message| %>
+      <ul>
+        <li><%= message %></li>
+      </ul>
+    <% end %>
+  <% end %>
+</div>

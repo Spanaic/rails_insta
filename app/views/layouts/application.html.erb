@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Insta</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <script src="https://kit.fontawesome.com/8f08035db1.js" crossorigin="anonymous"></script>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+  <body>
+
+  <header>
+    <h1><%= link_to "Insta!", post_images_path%></h1>
+    <nav>
+        <ul>
+        <% if user_signed_in? %>
+          <li><%= link_to "ログアウト", destroy_user_session_path, method:  :delete %></li>
+          <li><%= link_to "新規投稿", new_post_image_path %></li>
+          <li><%= link_to "マイページ", user_path(current_user) %></li>
+        <% else %>
+          <li><%= link_to "新規登録", new_user_registration_path %></li>
+          <li><%= link_to "ログイン", user_session_path %></li>
+        </ul>
+        <% end %>
+    </nav>
+  </header>
+
+    <%= yield %>
+
+  <footer>
+    <nav>
+      <% if user_signed_in? %>
+        <ul>
+          <li><%= link_to "プロフィール編集", edit_user_path(current_user) %></li>
+        </ul>
+      <% end %>
+    </nav>
+  </footer>
+
+  </body>
+</html>

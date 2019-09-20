@@ -1,0 +1,22 @@
+<% @post_images.each do |post_image| %>
+    <div class="continer">
+        <div class="col">
+        <%# プロフィール画像の表示も追記する %>
+            <%= link_to user_path(post_image.user.id) do %>
+            <p><%= post_image.user.profile_name %></p>
+            <% end %>
+
+            <%= link_to post_image_path(post_image.id) do %>
+            <p><%= attachment_image_tag post_image, :post_image, :fill, 480, 270, format: 'jpeg' %></p>
+            <% end %>
+
+            <%= post_image.caption %>
+        </div>
+        <%# <%= form_for[post_image, post_comment] do |f| %>
+
+            <%# <%= f.text_are :comment, placeholder: "コメントを書く" %>
+
+            <%# <%= f.submit "送信" %>
+        <%# <% end %>
+    </div>
+<% end %>

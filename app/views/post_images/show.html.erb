@@ -1,0 +1,64 @@
+<div class="container">
+
+    <h1>投稿詳細</h1>
+
+    <%= attachment_image_tag @post_image, :post_image %>
+
+    <%# いいねアイコンを導入する %>
+    <%# いいねをした人かどうかをif favorited_by?メソッドで選り分ける %>
+    <%# メソッドには必ず変数を渡す。 %>
+
+    <% if @post_image.favorited_by?(current_user) %>
+    <%# この@post_imageは現在ログインしているユーザに[いいね]されましたか？ %>
+        <%= link_to post_image_favorite_path(@post_image.id, @favorite.id), method:  :delete do %>
+            <i class="fa fa-heart" area-hidden="true" style="color: red;"></i>
+            <%= "#{@post_image.favorites.count}いいね" %>
+            <%# いいねされている状態。赤いハートのアイコンにdeleteのpathを貼る %>
+        <% end %>
+    <% else %>
+        <%= link_to post_image_favorites_path(@post_image.id), method:  :post do%>
+            <i class="fa fa-heart" aria-hidden="true"></i>
+            <%= "#{@post_image.favorites.count}いいね" %>
+            <%# いいねされていない状態。空っぽのハートにpostのpathを貼る %>
+        <% end %>
+    <% end %>
+
+    <%= @post_image.caption %>
+    <%= link_to "編集", edit_post_image_path(@post_image.id) %>
+    <%= link_to "削除", post_image_path(@post_image.id), method:  :delete %>
+</div>
+
+<div class="container">
+    <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
+    <div>
+        <% @post_image.post_comments.each do |post_comment| %>
+
+            <p><%= attachment_image_tag post_comment.user, :profile_image %></p>
+
+            <p><%= post_comment.user.name %></p>
+
+            <p><%= post_comment.comment %></p>
+            <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
+
+            <%= link_to "コメントを削除", post_image_post_comment_path(@post_image.id, post_comment.id), method:  :delete %>
+        <% end %>
+        <%# destroyにidが付与されてなかった場合はpost_image_post_comment’s’となっていたが,idが付与されたことでpathの記述が複数型から単数型へと変わる %>
+        <%# destroyにIDが付与されたことで、destory時に指定するidが2つになる。(特定の画像id, 特定のコメントid)2つを指定することは可能であり、それはrails routesで確認できる %>
+    </div>
+</div>
+
+<div class="container">
+    <%= form_for [@post_image, @post_comment] do |f| %>
+        <% if @post_comment.errors.any? %>
+            <%# form_forメソッドでもfではなく,formが入力される変数を指定してあげる %>
+            <%= "#{@post_comment.errors.count}件のエラーがあります。" %>
+            <% @post_comment.errors.full_messages.each do |message| %>
+                <%= message %>
+            <% end %>
+        <% end %>
+
+        <%= f.text_area :comment, placeholder: "コメントを書く" %>
+
+        <%= f.submit "送信" %>
+    <% end %>
+</div>
