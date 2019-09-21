@@ -1,5 +1,5 @@
-class OmniauthCallbacksController < ApplicationController
-# class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+# class OmniauthCallbacksController < ApplicationController
     # < ApplicationController
     def facebook
         callback_from :facebook
