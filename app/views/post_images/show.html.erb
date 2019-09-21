@@ -30,7 +30,7 @@
         <%# 上記の書き方をしたければ、showアクションで@favoriteに変数を渡す必要がある %>
         <%# そのときにわかっているIDを使用して、別のモデルのマスタIDを取得できるメソッド（find_by）を書く必要がある。 %>
 
-        <%= link_to post_image_favorites_path(@post_image.id) method:  :delete do %>
+        <%= link_to post_image_favorites_path(@post_image.id), method:  :delete do %>
         <%# current_user.favorites.find_by(post_image_id: @post_image.id).id,の記述をすることでfavoriteのマスタIDを特定することができる %>
         <%# 自分がうまくできなかった理由は,コメント機能と同じように削除機能を実行するときに,resourcesで付与したIDを特定していなかった(viewで特定させる場合はshowアクションの時点で渡す必要がある、もしくは上記の記述で特定) %>
         <%# PostImageモデルの中にfavorited_byメソッドを記述することで、そのモデルを使用する際（.newや.findなど）にfavorited_byメソッドをいつでも（modelでもviewでも）呼び出すことができるようになる %>
