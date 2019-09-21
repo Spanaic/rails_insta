@@ -8,18 +8,30 @@
     <%# いいねをした人かどうかをif favorited_by?メソッドで選り分ける %>
     <%# メソッドには必ず変数を渡す。 %>
 
-    <% if @post_image.favorited_by?(current_user) %>
+    <%# <% if @post_image.favorited_by?(current_user) %>
     <%# この@post_imageは現在ログインしているユーザに[いいね]されましたか？ %>
-        <%= link_to post_image_favorite_path(@post_image.id, @favorite.id), method:  :delete do %>
+        <%# <%= link_to post_image_favorite_path(@post_image.id, @favorite.id), method:  :delete do %>
+            <%# <i class="fa fa-heart" area-hidden="true" style="color: red;"></i> %>
+            <%# <%= "#{@post_image.favorites.count}いいね" %>
+            <%# いいねされている状態。赤いハートのアイコンにdeleteのpathを貼る %>
+        <%# <% end %>
+    <%# <% else %>
+        <%# <%= link_to post_image_favorites_path(@post_image.id), method:  :post do%>
+            <%# <i class="fa fa-heart" aria-hidden="true"></i> %>
+            <%# <%= "#{@post_image.favorites.count}いいね" %>
+            <%# いいねされていない状態。空っぽのハートにpostのpathを貼る %>
+        <%# <% end %>
+    <%# <% end %>
+
+    <% if @post_image.favorited_by?(current_user) %>
+        <%= link_to post_image_favorites_path(@post_image.id), method:  :delete do %>
             <i class="fa fa-heart" area-hidden="true" style="color: red;"></i>
             <%= "#{@post_image.favorites.count}いいね" %>
-            <%# いいねされている状態。赤いハートのアイコンにdeleteのpathを貼る %>
         <% end %>
     <% else %>
-        <%= link_to post_image_favorites_path(@post_image.id), method:  :post do%>
+        <%= link_to post_image_favorites_path(@post_image.id), method:  :post do %>
             <i class="fa fa-heart" aria-hidden="true"></i>
             <%= "#{@post_image.favorites.count}いいね" %>
-            <%# いいねされていない状態。空っぽのハートにpostのpathを貼る %>
         <% end %>
     <% end %>
 
