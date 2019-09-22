@@ -28,7 +28,15 @@ class FavoritesController < ApplicationController
         # カラムが埋まるので、データを保存できるようになる。
         favorite.save
         redirect_to post_image_path(post_image.id)
-        # render :show
+
+        下の記述ではmissing templateのエラーでうまく条件分岐されない。
+        # @post_comment = PostComment.new
+        # @favorite = Favorite.new
+        # if render :show
+        # else
+        #     @post_images = PostImage.all
+        #     render :index
+        # end
         # レンダーだとなぜ非同期通信のよう
     end
 

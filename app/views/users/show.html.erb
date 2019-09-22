@@ -1,1 +1,26 @@
+<%# プロフィールを実装予定 %>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <%# <img src=<%= @user.profile_image_id %>> %>
+            <%# facebook認証と同時にプロフィール画像をURLで取得できたけど、
+                条件分岐でattachment_image_tagと切り替えられないと実装できない %>
+            <p><%= attachment_image_tag @user, :profile_image, :fill, 300, 300, fallback: "no_image.jpg", size:'300x300' %></p>
+            <%# ひとまず安牌で↑にしておく。 %>
+
+            <%= @user.name %>
+
+            <button type:button class="btn btn-primary"><%= link_to "プロフィールを編集", edit_user_path(@user.id) %></button>
+
+            <p>投稿<%= @user.post_images.count %>件</p>
+
+        </div>
+    </div>
+</div>
+
+<%# 下は投稿画面 %>
+<%# bootstrapのテーブルとtabを使って切り替える機能を実装予定
+    保存したshow/post_imagesを集めて呼び出す機能も実装 %>
+<h2>投稿</h2>
 <%= render "post_images/list", post_images: @post_images %>
