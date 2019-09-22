@@ -1,0 +1,14 @@
+<% @followers.each do |follower| %>
+    <%= follower.name %>
+    <%# followerは元々Userモデルのレコード情報を持っているため、userモデルを指定しなくても、直接レコード内のカラムを呼び出せる %>
+
+    <%= follower.profile_name %>
+
+    <%= "投稿#{follower.post_images.count}件" %>
+
+    <% if follower.followed_by?(current_user) %>
+        <button type="button" class="btn btn-primary"><%= link_to "フォローをやめる", user_relationships_path(@user.id), method: :delete %></button>
+    <% else %>
+        <button type="button" class="btn btn-primary"><%= link_to "フォローする", user_relationships_path(@user.id), method: :post %></button>
+    <% end %>
+<% end %>

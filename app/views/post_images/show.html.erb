@@ -23,6 +23,16 @@
         <%# <% end %>
     <%# <% end %>
 
+    <%= attachment_image_tag @post_image.user, :profile_image, :fill, 300, 300, format: 'jpeg', fallback: "no_image.jpg", size: "300x300" %>
+
+    <%= @post_image.user.name %>
+
+    <% if @post_image.user.followed_by?(current_user) %>
+        <%= link_to "フォローをやめる", user_relationships_path(@post_image.user.id), method: :delete %>
+    <% else %>
+        <%= link_to "フォローする", user_relationships_path(@post_image.user.id), method: :post %>
+    <% end %>
+
     <% if @post_image.favorited_by?(current_user) %>
         <%# <%= link_to post_image_favorites_path(@post_image.id, @favorite.id) method:  :delete do %>
         <%# 上記の記述でfind(params[:id])でパラメータを特定できない理由は、リンクをクリックしてリクエストを送る段階でfavoriteのマスタIDがわかっていないから。（routeのpost_image#showを参照） %>
@@ -48,8 +58,12 @@
     <%# この辺にSNSシェアボタンを実装予定 %>
 
     <%= @post_image.caption %>
-    <%= link_to "編集", edit_post_image_path(@post_image.id) %>
-    <%= link_to "削除", post_image_path(@post_image.id), method:  :delete %>
+
+    <% if current_user == @post_image.user.id %>
+        <%= link_to "編集", edit_post_image_path(@post_image.id) %>
+        <%= link_to "削除", post_image_path(@post_image.id), method:  :delete %>
+    <% else %>
+    <% end %>
 </div>
 
 <div class="container">

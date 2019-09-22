@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <%# <img src=<%= @user.profile_image_id %>> %>
+            <%# <img src=<%= @user.profile_image_id %>
             <%# facebook認証と同時にプロフィール画像をURLで取得できたけど、
                 条件分岐でattachment_image_tagと切り替えられないと実装できない %>
             <p><%= attachment_image_tag @user, :profile_image, :fill, 300, 300, fallback: "no_image.jpg", size:'300x300' %></p>
@@ -11,7 +11,22 @@
 
             <%= @user.name %>
 
-            <button type:button class="btn btn-primary"><%= link_to "プロフィールを編集", edit_user_path(@user.id) %></button>
+            <% if current_user != @user %>
+                <% if @user.followed_by?(current_user) %>
+                <%# @userがcurrent_userにフォローされているか確かめる記述。 %>
+                <%# メソッド内で引数を渡すように定義されいてるので、きちんと渡す。 %>
+                    <button type="button" class="btn btn-primary"><%= link_to "フォローをやめる", user_relationships_path(@user.id), method: :delete %></button>
+                <% else %>
+                    <button type="button" class="btn btn-primary"><%= link_to "フォローする", user_relationships_path(@user.id), method: :post %></button>
+                <% end %>
+            <% else %>
+                <button type="button" class="btn btn-secondry"><%= link_to "プロフィールを編集", edit_user_path(@user.id) %></button>
+                <%# 後でボタンの色を変える %>
+            <% end %>
+
+            <%= link_to "#{@user.followings.count}人をフォロー中", follows_user_path(@user.id) %>
+
+            <%= link_to "フォロワー#{@user.followers.count}人", followers_user_path(@user.id) %>
 
             <p>投稿<%= @user.post_images.count %>件</p>
 

@@ -20,8 +20,22 @@ class UsersController < ApplicationController
         else
             render :edit
         end
-
     end
+
+    def follows
+        @user = User.find(params[:id])
+        @follows = @user.followings.all
+    end
+    # ＠userにフォローされている人を集めたページ
+    # followingsはUserモデルで定義した擬似クラス
+    # through:activeに＠userから受け取った外部キーを入れて、アソシエーションされたfollowerをすべて取得する。
+
+    def followers
+        @user = User.find(params[:id])
+        @followers = @user.followers.all
+    end
+
+    # 上の逆。
 
     private
     def user_params

@@ -15,5 +15,15 @@ Rails.application.routes.draw do
   # テーブル数が10~20個ほどになったときに、アクション内の書き方が複雑化するが、ネストしておくと記述量が少し減る。
 
   resources :users, only: [:edit, :index, :update, :show] do
+    resource :relationships, only: [:create, :destroy]
+    get :follows, on: :member
+    get :followers, on: :member
+
+    # get :pathの名前が入ってる。ネストされているのでpathはfollows_user_path,followers_user_pathとなる
+    # resourceの時は:コントローラを指定しているので要注意！
+    # resource内に別のルート（アクション）を追加したい場合はcollectionかmemberを用いる
+    # collectionは(id無し),memberは（idあり）のurl生成される
+    # follow関係のindexを、別アクションで代わりに作ったイメージ
+    # 自己結合多対多は自己の中心にルートを取って行くのが良さそう。（ネストで機能、自己にルート）
   end
 end

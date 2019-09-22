@@ -17,6 +17,35 @@ class User < ApplicationRecord
   has_many :post_comments, dependent:  :destroy
   has_many :favorites, dependent:  :destroy
 
+  # relationshipを2つhas_manyで定義しなくてはいけないため、わかりやすい名前をclass_name:オプションで指定してあげる。
+  has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id, dependent:  :destroy
+  # 自己結合多対多では中間テーブルも疑似クラス名で,モデルを2つに分けてアソシエーションを組む。
+  # foreign_keyとは親のモデルのprimary_key(マスタID)のこと
+  # 中間テーブルを2つに分ける際に、Userモデルから受け取ったprimary_keyをforeign_keyとしてどのカラムに保存するか指定する(それによって擬似クラス名の名前や使い方が変わってくる)
+  # activeなのでフォローする人としてforeign_keyにidを入れていくモデルとする。
+
+  has_many :followings, through: :active_relationships, source: :follower
+  # sourceの'follower'はrelationshipモデルで付けた擬似クラス名
+  # activeと付けた擬似クラス名を通して、フォローされた側を集めること　＝＞userが今フォローしてる人たちを集めることをfollowingsと定義している。
+
+  has_many :passive_relationships, class_name: "Relationship", foreign_key:  :follower_id, dependent:  :destroy
+  has_many :followers, through: :passive_relationships, source: :following
+
+  # モデルfollowersを指定してデータを引っ張ってくると,フォロワー(follower)を1としてフォローしている人たち(following)を集めて来る事ができる。
+  # passive_relationshipsをthroughすることで、どっちのforeign_keyにidが入るか決まるため、それに紐付いたレコードをすべて取得することができる
+
+def followed_by?(user)
+  # フォロワーから見て、フォローしている人の中に同じIDのユーザがいるかどうかを調べる。
+  # foreign_key(フォロワーのid)が入ってるテーブルを参照して、該当のフォローしている人(folowing)を探して集める。
+  # その中に引数userに入っているidとpassive_relationshipsのfollowing_idを照らし合わせて存在するかしないかを確認するメソッド
+  # 何度も言うけど,passiveだからfollowed_idは埋まってるよ。
+  passive_relationships.find_by(following_id: user.id).present?
+  # .presentメソッドは、モデルから指定されたカラムの配列を作り出して、配列に空がないかどうか調べるメソッド
+  # 一度配列を作るので、処理に時間がかかる可能性がある
+  # .exists?などは指定されたカラムを見て、該当するidなどがあればその時点でtrueを返すため、処理が早くなりそう。
+  # whereではexists,find_byではpresentの方が効率が良いとか、決まりがあるのかな？
+end
+
   attachment :profile_image
 
   def self.find_for_oauth(auth)

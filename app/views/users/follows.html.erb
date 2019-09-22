@@ -1,0 +1,13 @@
+<% @follows.each do |follow| %>
+    <%= follow.users.name %>
+
+    <%= follow.users.profile_name %>
+
+    <%= "投稿#{follow.users.post_images.count}件" %>
+
+    <% if follow.followed_by?(current_user) %>
+        <button type="button" class="btn btn-primary"><%= link_to "フォローをやめる", user_relationships_path(@user.id), method: :delete %></button>
+    <% else %>
+        <button type="button" class="btn btn-primary"><%= link_to "フォローする", user_relationships_path(@user.id), method: :post %></button>
+    <% end %>
+<% end %>
