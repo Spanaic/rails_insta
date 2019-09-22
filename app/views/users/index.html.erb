@@ -1,1 +1,8 @@
-<%= render "post_images/list", post_image: @post_image %>
+<% if @search_users %>
+    <%= render 'users/list', users: @search_users %>
+<% else %>
+    <%= render 'users/list', users: @users %>
+<% end %>
+
+<%# ローカル変数をcollectionで渡さない。パーシャル内に記述しているローカル変数に渡してあげる。%>
+

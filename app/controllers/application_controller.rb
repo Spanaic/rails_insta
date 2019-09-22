@@ -1,6 +1,12 @@
 class ApplicationController < ActionController::Base
     before_action :configure_permitted_parameters, if: :devise_controller?
     before_action :authenticate_user!, except: [:index]
+    before_action :set_search
+
+    def set_search
+        @search = User.ransack(params[:q])
+        @search_users = @search.result
+    end
 
     def after_sign_out_path_for(resource)
         new_user_session_path

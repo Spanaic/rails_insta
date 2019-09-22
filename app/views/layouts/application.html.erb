@@ -13,6 +13,14 @@
 
   <header>
     <h1><%= link_to "Insta!", post_images_path%></h1>
+
+<%# ransackのフォーム部分 %>
+    <%= search_form_for @search, url: users_path do |f| %>
+      <%= f.text_field :name_cont, placeholder: '名前を入力...' %>
+      <%= f.submit ("検索する") %>
+    <% end %>
+<%# url:オプションを付け忘れない %>
+
     <nav>
         <ul>
         <% if user_signed_in? %>

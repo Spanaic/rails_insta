@@ -1,0 +1,37 @@
+<% users.each do |user| %>
+    <div class="continer">
+        <div class="col">
+        <%# プロフィール画像の表示も追記する %>
+            <%= link_to user_path(user.id) do %>
+            <p><%= user.profile_name %></p>
+            <% end %>
+
+            <%= link_to post_image_path(user.id) do %>
+            <p><%= attachment_image_tag user, :profile_image, :fill, 200, 200, format: 'jpeg', fallback: "no_image.jpg", size: '200x200' %></p>
+            <% end %>
+
+            <%# いいねをindexにも表示する %>
+            <%# <% if post_image.favorited_by?(current_user) %>
+                <%# <%= link_to post_image_favorites_path(post_image.id), method:  :delete do %>
+                    <%# <i class="fas fa-heart" style="color: red;"></i> %>
+                    <%# <%= "#{post_image.favorites.count}いいね" %>
+                <%# <% end %>
+            <%# <% else %>
+                <%# <%= link_to post_image_favorites_path(post_image.id), method:  :post do %>
+                    <%# <i class="fas fa-heart"></i> %>
+                    <%# <%= "#{post_image.favorites.count}いいね" %>
+                <%# <% end %>
+            <%# <% end %>
+
+            <%# できれば各種SNSシェアボタンをここに実装予定 %>
+
+            <%= user.introduction %>
+        </div>
+        <%# <%= form_for[post_image, post_comment] do |f| %>
+
+            <%# <%= f.text_are :comment, placeholder: "コメントを書く" %>
+
+            <%# <%= f.submit "送信" %>
+        <%# <% end %>
+    </div>
+<% end %>
