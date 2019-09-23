@@ -12,7 +12,7 @@
   <body>
 
   <header>
-    <h1><%= link_to "Insta!", post_images_path%></h1>
+    <h1><%= link_to "Insta!", root_path %></h1>
 
 <%# ransackのフォーム部分 %>
     <%= search_form_for @search, url: users_path do |f| %>
@@ -24,7 +24,7 @@
     <nav>
         <ul>
         <% if user_signed_in? %>
-          <li><%= link_to "ログアウト", destroy_user_session_path, method:  :delete %></li>
+          <li><%= link_to "ユーザーを探す", users_path %></li>
           <li><%= link_to "新規投稿", new_post_image_path %></li>
           <li><%= link_to "マイページ", user_path(current_user) %></li>
         <% else %>
@@ -41,7 +41,8 @@
     <nav>
       <% if user_signed_in? %>
         <ul>
-          <li><%= link_to "プロフィール編集", edit_user_path(current_user) %></li>
+          <%# <li><%= link_to "プロフィール編集", edit_user_path(current_user) %>
+          <li><%= link_to "ログアウト", destroy_user_session_path, method:  :delete %></li>
         </ul>
       <% end %>
     </nav>
