@@ -1,4 +1,6 @@
 class PostImagesController < ApplicationController
+    before_action :authenticate_user!, except: [:index, :show]
+
     def index
         # @post_images = PostImage.all
         @post_images = PostImage.page(params[:page]).per(6).reverse_order

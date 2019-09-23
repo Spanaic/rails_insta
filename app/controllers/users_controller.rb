@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
     def index
         @users = User.page(params[:page]).per(20).reverse_order
+        # 試しに入れてる記述↓↓↓
+        # @post_images = @users.post_images.id.last
     end
 
     def show

@@ -10,7 +10,6 @@
             <%= link_to post_image_path(user.id) do %>
             <p><%= attachment_image_tag user, :profile_image, :fill, 200, 200, format: 'jpeg', fallback: "no_image.jpg", size: '200x200' %></p>
             <% end %>
-
             <%# いいねをindexにも表示する %>
             <%# <% if post_image.favorited_by?(current_user) %>
                 <%# <%= link_to post_image_favorites_path(post_image.id), method:  :delete do %>

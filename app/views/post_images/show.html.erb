@@ -27,76 +27,96 @@
 
     <%= @post_image.user.name %>
 
-    <% if @post_image.user.followed_by?(current_user) %>
-        <%= link_to "フォローをやめる", user_relationships_path(@post_image.user.id), method: :delete %>
-    <% else %>
-        <%= link_to "フォローする", user_relationships_path(@post_image.user.id), method: :post %>
-    <% end %>
+    <% if user_signed_in? %>
 
-    <% if @post_image.favorited_by?(current_user) %>
-        <%# <%= link_to post_image_favorites_path(@post_image.id, @favorite.id) method:  :delete do %>
-        <%# 上記の記述でfind(params[:id])でパラメータを特定できない理由は、リンクをクリックしてリクエストを送る段階でfavoriteのマスタIDがわかっていないから。（routeのpost_image#showを参照） %>
-        <%# この段階でわかっていれば,findメソッドにそのパラメータを渡して,Favoriteモデルに探してこい！と命令できる %>
-        <%# 上記の書き方をしたければ、showアクションで@favoriteに変数を渡す必要がある %>
-        <%# そのときにわかっているIDを使用して、別のモデルのマスタIDを取得できるメソッド（find_by）を書く必要がある。 %>
-
-        <%= link_to post_image_favorites_path(@post_image.id), method:  :delete do %>
-        <%# current_user.favorites.find_by(post_image_id: @post_image.id).id,の記述をすることでfavoriteのマスタIDを特定することができる %>
-        <%# 自分がうまくできなかった理由は,コメント機能と同じように削除機能を実行するときに,resourcesで付与したIDを特定していなかった(viewで特定させる場合はshowアクションの時点で渡す必要がある、もしくは上記の記述で特定) %>
-        <%# PostImageモデルの中にfavorited_byメソッドを記述することで、そのモデルを使用する際（.newや.findなど）にfavorited_byメソッドをいつでも（modelでもviewでも）呼び出すことができるようになる %>
-
-            <i class="fa fa-heart" area-hidden="true" style="color: red;"></i>
-            <%= "#{@post_image.favorites.count}いいね" %>
+        <% if @post_image.user.followed_by?(current_user) %>
+            <%= link_to "フォローをやめる", user_relationships_path(@post_image.user.id), method: :delete %>
+        <% else %>
+            <%= link_to "フォローする", user_relationships_path(@post_image.user.id), method: :post %>
         <% end %>
-    <% else %>
-        <%= link_to post_image_favorites_path(@post_image.id), method:  :post do %>
-            <i class="fa fa-heart" aria-hidden="true"></i>
-            <%= "#{@post_image.favorites.count}いいね" %>
-        <% end %>
-    <% end %>
 
-    <%# この辺にSNSシェアボタンを実装予定 %>
+        <% if @post_image.favorited_by?(current_user) %>
+            <%# <%= link_to post_image_favorites_path(@post_image.id, @favorite.id) method:  :delete do %>
+            <%# 上記の記述でfind(params[:id])でパラメータを特定できない理由は、リンクをクリックしてリクエストを送る段階でfavoriteのマスタIDがわかっていないから。（routeのpost_image#showを参照） %>
+            <%# この段階でわかっていれば,findメソッドにそのパラメータを渡して,Favoriteモデルに探してこい！と命令できる %>
+            <%# 上記の書き方をしたければ、showアクションで@favoriteに変数を渡す必要がある %>
+            <%# そのときにわかっているIDを使用して、別のモデルのマスタIDを取得できるメソッド（find_by）を書く必要がある。 %>
 
-    <%= @post_image.caption %>
+            <%= link_to post_image_favorites_path(@post_image.id), method:  :delete do %>
+            <%# current_user.favorites.find_by(post_image_id: @post_image.id).id,の記述をすることでfavoriteのマスタIDを特定することができる %>
+            <%# 自分がうまくできなかった理由は,コメント機能と同じように削除機能を実行するときに,resourcesで付与したIDを特定していなかった(viewで特定させる場合はshowアクションの時点で渡す必要がある、もしくは上記の記述で特定) %>
+            <%# PostImageモデルの中にfavorited_byメソッドを記述することで、そのモデルを使用する際（.newや.findなど）にfavorited_byメソッドをいつでも（modelでもviewでも）呼び出すことができるようになる %>
 
-    <% if current_user == @post_image.user.id %>
-        <%= link_to "編集", edit_post_image_path(@post_image.id) %>
-        <%= link_to "削除", post_image_path(@post_image.id), method:  :delete %>
-    <% else %>
-    <% end %>
-</div>
-
-<div class="container">
-    <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
-    <div>
-        <% @post_image.post_comments.each do |post_comment| %>
-
-            <p><%= attachment_image_tag post_comment.user, :profile_image %></p>
-
-            <p><%= post_comment.user.name %></p>
-
-            <p><%= post_comment.comment %></p>
-            <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
-
-            <%= link_to "コメントを削除", post_image_post_comment_path(@post_image.id, post_comment.id), method:  :delete %>
-        <% end %>
-        <%# destroyにidが付与されてなかった場合はpost_image_post_comment’s’となっていたが,idが付与されたことでpathの記述が複数型から単数型へと変わる %>
-        <%# destroyにIDが付与されたことで、destory時に指定するidが2つになる。(特定の画像id, 特定のコメントid)2つを指定することは可能であり、それはrails routesで確認できる %>
-    </div>
-</div>
-
-<div class="container">
-    <%= form_for [@post_image, @post_comment] do |f| %>
-        <% if @post_comment.errors.any? %>
-            <%# form_forメソッドでもfではなく,formが入力される変数を指定してあげる %>
-            <%= "#{@post_comment.errors.count}件のエラーがあります。" %>
-            <% @post_comment.errors.full_messages.each do |message| %>
-                <%= message %>
+                <i class="fa fa-heart" area-hidden="true" style="color: red;"></i>
+                <%= "#{@post_image.favorites.count}いいね" %>
+            <% end %>
+        <% else %>
+            <%= link_to post_image_favorites_path(@post_image.id), method:  :post do %>
+                <i class="fa fa-heart" aria-hidden="true"></i>
+                <%= "#{@post_image.favorites.count}いいね" %>
             <% end %>
         <% end %>
 
-        <%= f.text_area :comment, placeholder: "コメントを書く" %>
+        <%# この辺にSNSシェアボタンを実装予定 %>
 
-        <%= f.submit "送信" %>
+        <% if current_user == @post_image.user.id %>
+            <%= link_to "編集", edit_post_image_path(@post_image.id) %>
+            <%= link_to "削除", post_image_path(@post_image.id), method:  :delete %>
+        <% end %>
+
+    <%= @post_image.caption %>
+
+    <div class="row">
+        <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
+        <div>
+            <% @post_image.post_comments.each do |post_comment| %>
+
+                <p><%= attachment_image_tag post_comment.user, :profile_image %></p>
+
+                <p><%= post_comment.user.name %></p>
+
+                <p><%= post_comment.comment %></p>
+                <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
+
+                <% if current_user == post_comment.user %>
+                    <%= link_to "コメントを削除", post_image_post_comment_path(@post_image.id, post_comment.id), method:  :delete %>
+                <% end %>
+                <%# destroyにidが付与されてなかった場合はpost_image_post_comment’s’となっていたが,idが付与されたことでpathの記述が複数型から単数型へと変わる %>
+                <%# destroyにIDが付与されたことで、destory時に指定するidが2つになる。(特定の画像id, 特定のコメントid)2つを指定することは可能であり、それはrails routesで確認できる %>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="row">
+        <%= form_for [@post_image, @post_comment] do |f| %>
+            <% if @post_comment.errors.any? %>
+                <%# form_forメソッドでもfではなく,formが入力される変数を指定してあげる %>
+                <%= "#{@post_comment.errors.count}件のエラーがあります。" %>
+                <% @post_comment.errors.full_messages.each do |message| %>
+                    <%= message %>
+                <% end %>
+            <% end %>
+
+            <%= f.text_area :comment, placeholder: "コメントを書く" %>
+
+            <%= f.submit "送信" %>
+        <% end %>
+    </div>
+
+    <% else %>
+        <%= @post_image.caption %>
+        <%= "#{@post_image.user.followers.count}人のフォロワー" %>
+        <%= "#{@post_image.favorites.count}いいね" %>
+        <div class="container">
+            <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
+            <div>
+                <% @post_image.post_comments.each do |post_comment| %>
+                    <p><%= attachment_image_tag post_comment.user, :profile_image %></p>
+                    <p><%= post_comment.user.name %></p>
+                    <p><%= post_comment.comment %></p>
+                    <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
+                <% end %>
+            </div>
+        </div>
     <% end %>
 </div>
