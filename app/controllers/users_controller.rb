@@ -1,11 +1,12 @@
 class UsersController < ApplicationController
     def index
-        @users = User.page(params[:page]).per(20)
+        @users = User.page(params[:page]).per(20).reverse_order
     end
 
     def show
         @user = User.find(params[:id])
-        @post_images = @user.post_images.all
+        @post_images = @user.post_images.page(params[:page]).per(6).reverse_order
+        # 元々allで変数に代入していたので、kaminari風に変数に値を代入してあげれば、指定した数の表示件数にになる。
     end
 
     def edit

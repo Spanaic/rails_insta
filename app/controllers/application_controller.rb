@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
 
     def set_search
         @search = User.ransack(params[:q])
+        # @search = User.page(params[:page]).per(20).reverse_order
         @search_users = @search.result
+        # .page(params[:page]).per(20).reverse_order
     end
 
     def after_sign_out_path_for(resource)

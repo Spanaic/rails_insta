@@ -29,7 +29,7 @@ class FavoritesController < ApplicationController
         favorite.save
         redirect_to post_image_path(post_image.id)
 
-        下の記述ではmissing templateのエラーでうまく条件分岐されない。
+        # 下の記述ではmissing templateのエラーでうまく条件分岐されない。
         # @post_comment = PostComment.new
         # @favorite = Favorite.new
         # if render :show
