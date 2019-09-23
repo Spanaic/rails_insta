@@ -1,6 +1,8 @@
 class PostImagesController < ApplicationController
     def index
-        @post_images = PostImage.all
+        # @post_images = PostImage.all
+        @post_images = PostImage.page(params[:page]).per(6).reverse_order
+        # kaminariでアクションごとに表示ページ数を変える場合は.per(好きな数字)をparam[:page]の後に指定する。
     end
 
     def new
