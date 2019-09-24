@@ -8,4 +8,9 @@ module PostImagesHelper
         # エスケープ処理とは、特殊な文字列を勝手に変換してくれる処理のこと。
         # .html_safeをすることで、特殊な文字列でも変換されなくなる。
     end
+
+    def render_with_post_comment(comment)
+        comment.gsub(/[@][\w\p{Han}ぁ-ヶｦ-ﾟー]+/){|word| link_to word, "/users/#{word.delete("@")}"}.html_safe
+        # @に変える
+    end
 end

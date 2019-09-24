@@ -9,7 +9,9 @@ class PostComment < ApplicationRecord
     # ポストコメントにidを付与(resources)してdeleteしていたが、中間テーブルのため、idを付与しなくても探し出すことが可能.
     # viewに渡された.eachされているブロック変数とparams[:id or 〇〇_id]を指定するだけで特定可能なため。
 
-    validates :comment, presence: true
+    validates :comment, presence: true, length: {maximum: 99}
+
+    has_and_belongs_to_many :users
 
     # I wrote this for pull request
 end

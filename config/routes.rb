@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     # resource"s"はidを与えるかどうか。viewを作るかどうかが問題ではない。
     # :destroyする時には必ずIDを指定しなければならず、そうするとresource's'とすることでidを付与することができ、削除する対象を'path'で指定できるようになる。
     # URLを参照したときに、/idではなく.idなどの表示になる場合は、indexのpathに必要のないidを指定したときなどに起こるバグ。
+    get :reply, on: :member
   end
 
   # ネストすることで、親のidを指定したり、チーム開発で無用な混乱を招く必要がなくなるのでネストは大事。
@@ -29,5 +30,7 @@ Rails.application.routes.draw do
     # collectionは(id無し),memberは（idあり）のurl生成される
     # follow関係のindexを、別アクションで代わりに作ったイメージ
     # 自己結合多対多は自己の中心にルートを取って行くのが良さそう。（ネストで機能、自己にルート）
+
+    get :reply_user, on: :member
   end
 end

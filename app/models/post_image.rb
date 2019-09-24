@@ -12,7 +12,7 @@ class PostImage < ApplicationRecord
     attachment :post_image
 
     validates :post_image, presence: true
-    validates :caption, presence: true, length: {minimum: 5, maximum: 140}
+    validates :caption, presence: true, length: {maximum: 140}
 
     def favorited_by?(user)
         favorites.where(user_id: user.id).exists?

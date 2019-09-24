@@ -65,6 +65,13 @@ class PostImagesController < ApplicationController
     # 後半の数行はイメージが沸かないので実装後に確認する
     # 記事の筆者と変数の記述が違うのでcommentのところは書き換える必要があると思われる。
 
+    def reply
+        @post_image = PostImage.find(params[:id])
+        @post_comment = PostComment.new
+        @favorite = Favorite.new
+        render :show
+    end
+
     private
     def post_image_params
         params.require(:post_image).permit(:post_image, :caption)

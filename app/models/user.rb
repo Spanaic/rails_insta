@@ -12,6 +12,7 @@ class User < ApplicationRecord
         # カラムに必要な情報が渡っているか、validatesが渡す情報の邪魔をしていないか要チェック
 
         # nameとprofile_nameにauth.info.nameの情報を渡してみてはいかが？
+  has_and_belongs_to_many :post_comments
 
   has_many :post_images, dependent:  :destroy
   has_many :post_comments, dependent:  :destroy

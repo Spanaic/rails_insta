@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:id])
+        # @reply_user = User.find_by(profile_name: params[:name])
         @post_images = @user.post_images.page(params[:page]).per(6).reverse_order
         # 元々allで変数に代入していたので、kaminari風に変数に値を代入してあげれば、指定した数の表示件数にになる。
     end
@@ -39,6 +40,12 @@ class UsersController < ApplicationController
     end
 
     # 上の逆。
+
+    # def reply_user
+    #     @user = User.find_by(profile_name: params[:name])
+    #     # (params[:id])で渡していた部分でエラーが出る可能性有り
+    #     redirect_to user_path(params[:name])
+    # end
 
     private
     def user_params

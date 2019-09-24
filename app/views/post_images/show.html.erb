@@ -79,6 +79,8 @@
                 <p><%= post_comment.comment %></p>
                 <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
 
+                <p><%= link_to "返信する", reply_post_image_path(@post_image.id) %></p>
+
                 <% if current_user == post_comment.user %>
                     <%= link_to "コメントを削除", post_image_post_comment_path(@post_image.id, post_comment.id), method:  :delete %>
                 <% end %>
@@ -87,6 +89,50 @@
             <% end %>
         </div>
     </div>
+
+    <%# コメント入力欄のカスタマイズテスト %>
+
+          <div class="row">
+        <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
+        <div>
+            <% @post_image.post_comments.each do |post_comment| %>
+
+                <p><%= attachment_image_tag post_comment.user, :profile_image %></p>
+
+                <p><%= post_comment.user.name %></p>
+
+                <%# <p><%= post_comment.comment %>
+                <p><%= render_with_post_comment(post_comment.comment) %></p>
+                <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
+
+                <p><%= link_to "返信する", reply_post_image_path(@post_image.id) %></p>
+
+                <% if current_user == post_comment.user %>
+                    <%= link_to "コメントを削除", post_image_post_comment_path(@post_image.id, post_comment.id), method:  :delete %>
+                <% end %>
+                <%# destroyにidが付与されてなかった場合はpost_image_post_comment’s’となっていたが,idが付与されたことでpathの記述が複数型から単数型へと変わる %>
+                <%# destroyにIDが付与されたことで、destory時に指定するidが2つになる。(特定の画像id, 特定のコメントid)2つを指定することは可能であり、それはrails routesで確認できる %>
+
+                <div class="row">
+                    <%= form_for [@post_image, @post_comment] do |f| %>
+                        <% if @post_comment.errors.any? %>
+                            <%# form_forメソッドでもfではなく,formが入力される変数を指定してあげる %>
+                            <%= "#{@post_comment.errors.count}件のエラーがあります。" %>
+                            <% @post_comment.errors.full_messages.each do |message| %>
+                                <%= message %>
+                            <% end %>
+                        <% end %>
+
+                        <%= f.text_area :comment, value: "#{post_comment.user.name}" %>
+
+                        <%= f.submit "送信" %>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+
+    <%# コメント入力欄のカスタマイズテスト %>
 
     <div class="row">
         <%= form_for [@post_image, @post_comment] do |f| %>
