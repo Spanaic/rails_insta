@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   # ハッシュタグのリンクに飛ぶためのルーティング
   # post_imagesコントローラのhashtagアクションメソッドが呼び出される
 
+  get '/users/reply/:name', to: "users#reply_user"
+
   resources :post_images do
     resources :post_comments, only: [:create, :destroy]
     resource :favorites, only: [:create, :destroy]
@@ -31,6 +33,7 @@ Rails.application.routes.draw do
     # follow関係のindexを、別アクションで代わりに作ったイメージ
     # 自己結合多対多は自己の中心にルートを取って行くのが良さそう。（ネストで機能、自己にルート）
 
-    get :reply_user, on: :member
+    # get :reply_user, on: :member
+    # 多分要らない↑↑↑
   end
 end

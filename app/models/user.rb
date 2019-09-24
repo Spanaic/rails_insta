@@ -7,7 +7,8 @@ class User < ApplicationRecord
         #  :omniauthtableをONにする
 
          validates :name, presence: true, length: {minimum: 1, maximum: 20}
-         validates :profile_name, presence: true, length: {minimum: 1, maximum: 100}
+         validates :profile_name, presence: true, format: { with: /\A[a-zA-Z\d]+\z/ }, length: {minimum: 1, maximum: 100}
+
         # facebook認証で必要な項目、以外でvalidatesを掛けていると（今回の場合はprofile_name）createメソッドが実行される際に、必要なカラムが埋まらず（今回はpresence: trueをしていたため）rollbackされてしまう。
         # カラムに必要な情報が渡っているか、validatesが渡す情報の邪魔をしていないか要チェック
 
@@ -61,7 +62,7 @@ end
         uid:      auth.uid,
         provider: auth.provider,
         name:     auth.info.name,
-        profile_name:  auth.info.name,
+        profile_name:  auth.uid,
         # profile_image_id: auth.info.image,
         email:    auth.info.email,
         password: Devise.friendly_token[0,20]
