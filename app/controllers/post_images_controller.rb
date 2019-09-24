@@ -50,6 +50,21 @@ class PostImagesController < ApplicationController
         redirect_to post_images_path
     end
 
+    def hashtag
+        # リクエストされるのはhashtagをクリックされた時だと思われる。
+        @user = current_user
+        @tag = Hashtag.find_by(hashname: params[:name])
+        # params[:name]はrootでurlにnameが含まれるようになるからかな？
+        @post_images = @tag.post_images.build
+        # buildは外部キーを含む.newを行う際にわかりやすいので使用されている
+        @post_image = @tag.post_images.page(params[:page])
+        # @comment    = Comment.new
+        # @comments   = @post_images.comments
+    end
+
+    # 後半の数行はイメージが沸かないので実装後に確認する
+    # 記事の筆者と変数の記述が違うのでcommentのところは書き換える必要があると思われる。
+
     private
     def post_image_params
         params.require(:post_image).permit(:post_image, :caption)

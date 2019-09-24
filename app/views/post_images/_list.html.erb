@@ -28,7 +28,7 @@
 
                 <%# できれば各種SNSシェアボタンをここに実装予定 %>
 
-                <%= post_image.caption %>
+                <%= render_with_hashtags(post_image.caption) %>
 
             <%# indexとshowページだけユーザをログインさせたい %>
             <% else %>
