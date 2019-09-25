@@ -1,0 +1,22 @@
+
+
+<% if post_image.favorited_by?(current_user) %>
+    <%= link_to post_image_favorites_path(post_image.id), id: 'favorite-button', method: :delete, remote: true do %>
+        <i class="fas fa-heart"></i>
+        <%# image_tag('source')で出力できる。.svgは点の座標とそれを結ぶ線でなどの数値データを元に作成された画像ファイル。 %>
+        <%# .svgは拡大収縮されても画像が劣化せず、レスポンシブなデザインにも対応する %>
+        <%# remote: true　＝＞　オプションをlink_toやform_forに入れると、リクエストでHTMLではなくJSONを要求する %>
+        <span><%= post_image.favorites.count %></span>
+        <%# モデル内でcounter_cache: :favorites_countの値を取得して表示する。途中から導入すると数の整合性が取れなくなる可能性あり %>
+    <% end %>
+<% else %>
+    <%= link_to post_image_favorites_path(post_image.id), id: 'favorite-button', method: :post, remote: true do %>
+        <i class="far fa-heart"></i>
+        <%# <%= image_tag('icon_heart.svg') %>
+    <%# <% end %>
+        <span><%= post_image.favorites.count %></span>
+    <% end %>
+
+<% end %>
+
+

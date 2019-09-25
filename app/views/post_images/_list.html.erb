@@ -1,4 +1,4 @@
-<% @post_images.each do |post_image| %>
+<% post_images.each do |post_image| %>
     <div class="continer">
         <div class="col">
 
@@ -13,18 +13,25 @@
                 <p><%= attachment_image_tag post_image, :post_image, :fill, 480, 270, format: 'jpeg' %></p>
                 <% end %>
 
-                <%# いいねをindexにも表示する %>
-                <% if post_image.favorited_by?(current_user) %>
-                    <%= link_to post_image_favorites_path(post_image.id), method:  :delete do %>
-                        <i class="fas fa-heart" style="color: red;"></i>
-                        <%= "#{post_image.favorites.count}いいね" %>
-                    <% end %>
-                <% else %>
-                    <%= link_to post_image_favorites_path(post_image.id), method:  :post do %>
-                        <i class="fas fa-heart"></i>
-                        <%= "#{post_image.favorites.count}いいね" %>
-                    <% end %>
-                <% end %>
+                <%# 非同期を乗っけたパ＝シャルを記述 %>
+                <%= render 'favorites/favorite', post_image: post_image %>
+                <%# レンダーに渡す変数は、アクションメソッドで定義した変数以外にもただの数字や、.eachで切り分けたブロック変数も代入することができる。%>
+                <%# 非同期を乗っけたパーシャルを記述 %>
+
+
+                <%# 非同期前のいいねの記述↓↓↓ %>
+                <%# <% if post_image.favorited_by?(current_user) %>
+                    <%# <%= link_to post_image_favorites_path(post_image.id), method:  :delete do %>
+                        <%# <i class="fas fa-heart" style="color: red;"></i> %>
+                        <%# <%= "#{post_image.favorites.count}いいね" %>
+                    <%# <% end %>
+                <%# <% else %>
+                    <%# <%= link_to post_image_favorites_path(post_image.id), method:  :post do %>
+                        <%# <i class="fas fa-heart"></i> %>
+                        <%# <%= "#{post_image.favorites.count}いいね" %>
+                    <%# <% end %>
+                <%# <% end %>
+                <%# 非同期前のいいねの記述↑↑↑ %>
 
                 <%# できれば各種SNSシェアボタンをここに実装予定 %>
 
@@ -39,6 +46,7 @@
                 <%= link_to post_image_path(post_image.id) do %>
                 <p><%= attachment_image_tag post_image, :post_image, :fill, 480, 270, format: 'jpeg' %></p>
                 <% end %>
+                 <span><%= post_image.favorites_count %></span>
                 <%= post_image.caption %>
             <% end %>
         </div>
@@ -51,4 +59,4 @@
     </div>
 <% end %>
 
-<%= paginate @post_images, class: "paginate" %>
+<%= paginate post_images, class: "paginate" %>

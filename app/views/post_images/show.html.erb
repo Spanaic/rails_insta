@@ -57,6 +57,10 @@
             <% end %>
         <% end %>
 
+        <%# 非同期を乗っけたパ＝シャルを記述 %>
+        <%= render 'post_images/favorite', post_image: @post_image, post_comment: @post_comment %>
+        <%# 非同期を乗っけたパーシャルを記述 %>
+
         <%# この辺にSNSシェアボタンを実装予定 %>
 
         <% if current_user == @post_image.user.id %>
