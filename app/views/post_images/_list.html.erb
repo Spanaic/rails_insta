@@ -5,7 +5,7 @@
             <% if user_signed_in? %>
 
             <%# プロフィール画像の表示も追記する %>
-                <%= link_to user_path(post_image.user.id) do %>
+                <%= link_to user_path(post_image.user.profile_name) do %>
                 <p><%= post_image.user.profile_name %></p>
                 <% end %>
 
@@ -39,7 +39,7 @@
 
             <%# indexとshowページだけユーザをログインさせたい %>
             <% else %>
-                <%= link_to user_path(post_image.user.id) do %>
+                <%= link_to user_path(post_image.user.profile_name) do %>
                 <p><%= post_image.user.profile_name %></p>
                 <% end %>
 

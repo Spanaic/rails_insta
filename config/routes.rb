@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   # ネストすることで、親のidを指定したり、チーム開発で無用な混乱を招く必要がなくなるのでネストは大事。
   # テーブル数が10~20個ほどになったときに、アクション内の書き方が複雑化するが、ネストしておくと記述量が少し減る。
 
-  resources :users, only: [:edit, :index, :update, :show, :index] do
+  resources :users, param: :profile_name, only: [:edit, :index, :update, :show, :index] do
     resource :relationships, only: [:create, :destroy]
     get :follows, on: :member
     get :followers, on: :member

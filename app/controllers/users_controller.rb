@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     end
 
     def show
-        @user = User.find(params[:id])
+        @user = User.find_by(profile_name: params[:profile_name])
         # params[:id]などの該当する記述（User）を[:name]に書き換える。
         @reply_user = User.find_by(profile_name: params[:id])
         @post_images = @user.post_images.page(params[:page]).per(6).reverse_order
