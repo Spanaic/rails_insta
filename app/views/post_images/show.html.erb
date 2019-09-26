@@ -88,7 +88,7 @@
                 <p><%= render_with_post_comment(post_comment.comment) %></p>
                 <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
 
-                <p><%= link_to "返信する", reply_post_image_path(@post_image.id) %></p>
+                <p><%= link_to "返信する", reply_post_image_path(@post_image.id), remote: true %></p>
 
                 <% if current_user == post_comment.user %>
                     <%= link_to "コメントを削除", post_image_post_comment_path(@post_image.id, post_comment.id), method:  :delete %>
@@ -96,42 +96,21 @@
                 <%# destroyにidが付与されてなかった場合はpost_image_post_comment’s’となっていたが,idが付与されたことでpathの記述が複数型から単数型へと変わる %>
                 <%# destroyにIDが付与されたことで、destory時に指定するidが2つになる。(特定の画像id, 特定のコメントid)2つを指定することは可能であり、それはrails routesで確認できる %>
 
-                <div class="row">
-                    <%= form_for [@post_image, @post_comment] do |f| %>
-                        <% if @post_comment.errors.any? %>
-                            <%# form_forメソッドでもfではなく,formが入力される変数を指定してあげる %>
-                            <%= "#{@post_comment.errors.count}件のエラーがあります。" %>
-                            <% @post_comment.errors.full_messages.each do |message| %>
-                                <%= message %>
-                            <% end %>
-                        <% end %>
-
-                        <%= f.text_area :comment, value: "@#{post_comment.user.profile_name}" %>
-
-                        <%= f.submit "送信" %>
-                    <% end %>
-                </div>
+            <div id="reply_user">
+                <%= render 'post_comments/form', post_image: @post_image, post_comment: post_comment, new_post_comment: @new_post_comment, favorite: @favorite %>
+            </div>
             <% end %>
         </div>
     </div>
 
     <%# コメント入力欄のカスタマイズテスト %>
 
-    <div class="row">
-        <%= form_for [@post_image, @post_comment] do |f| %>
-            <% if @post_comment.errors.any? %>
-                <%# form_forメソッドでもfではなく,formが入力される変数を指定してあげる %>
-                <%= "#{@post_comment.errors.count}件のエラーがあります。" %>
-                <% @post_comment.errors.full_messages.each do |message| %>
-                    <%= message %>
-                <% end %>
-            <% end %>
 
-            <%= f.text_area :comment, placeholder: "コメントを書く" %>
 
-            <%= f.submit "送信" %>
-        <% end %>
-    </div>
+
+    <%# form_forのレンダーをここに記述 %>
+
+    <%# form_forのレンダーをここに記述 %>
 
     <% else %>
         <%= @post_image.caption %>

@@ -1,0 +1,18 @@
+<div class="row">
+    <%= form_for [post_image, new_post_comment] do |f| %>
+        <% if post_comment.errors.any? %>
+            <%# form_forメソッドでもfではなく,formが入力される変数を指定してあげる %>
+            <%= "#{post_comment.errors.count}件のエラーがあります。" %>
+            <% post_comment.errors.full_messages.each do |message| %>
+                <%= message %>
+            <% end %>
+        <% end %>
+        <% if %>
+        <%= f.text_area :comment, value: "@#{post_comment.user.profile_name}" %>
+        <% else %>
+        <%= f.text_area :comment,value: "", placeholder: "コメントを書く" %>
+        <% end %>
+
+        <%= f.submit "送信" %>
+    <% end %>
+</div>

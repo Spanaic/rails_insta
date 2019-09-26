@@ -13,7 +13,7 @@ class PostImagesController < ApplicationController
 
     def show
         @post_image = PostImage.find(params[:id])
-        @post_comment = PostComment.new
+        @new_post_comment = PostComment.new
         @favorite = Favorite.new
         # @post_comments = @post_image.post_comments
     end
@@ -67,7 +67,7 @@ class PostImagesController < ApplicationController
 
     def reply
         @post_image = PostImage.find(params[:id])
-        @post_comment = PostComment.new
+        @new_post_comment = PostComment.new
         @favorite = Favorite.new
         render :show
     end

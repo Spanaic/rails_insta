@@ -10,7 +10,7 @@ module PostImagesHelper
     end
 
     def render_with_post_comment(comment)
-        comment.gsub(/[@][\w\p{Han}ぁ-ヶｦ-ﾟー]+/){|word| link_to word, "/users/reply/#{word.delete("@")}"}.html_safe
+        comment.gsub(/[@][\w\p{Han}ぁ-ヶｦ-ﾟー]+/){|word| link_to word, "/users/#{word.delete("@")}"}.html_safe
         # @に変える
     end
 end

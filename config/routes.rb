@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   # ハッシュタグのリンクに飛ぶためのルーティング
   # post_imagesコントローラのhashtagアクションメソッドが呼び出される
 
-  get '/users/reply/:name', to: "users#reply_user"
+  # get '/users/reply/:name', to: "users#reply_user"
 
   resources :post_images do
     resources :post_comments, only: [:create, :destroy]
