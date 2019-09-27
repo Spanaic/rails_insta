@@ -1,21 +1,24 @@
 class PostCommentsController < ApplicationController
     def create
         @post_image = PostImage.find(params[:post_image_id])
-        @post_comment = PostComment.new(post_comment_params)
-        @post_comment.post_image_id = @post_image.id
-        @post_comment.user_id = current_user.id
+        post_comment = PostComment.new(post_comment_params)
+        post_comment.post_image_id = @post_image.id
+        post_comment.user_id = current_user.id
         # create,destroy,updateなどアクションメソッド内で完結する場合（Viewに変数を渡さない場合）はローカル変数を使っておくほうがセキュリティ上良い。
-        if  @post_comment.save
+        if  post_comment.save
+
+            post_comment.create_notification_post_comment(current_user, post_comment.id)
+
             redirect_to post_image_path(params[:post_image_id])
-        elsif
+        else
             render template: "post_images/show"
             # ネストされたコントローラのレンダー先は一体どこに？
             # template:オプションから、"コントローラ/アクション"で呼び出しを行う
             # 上記はviewも呼び出す場合
             # if内、renderの前に変数を定義することで、どのタイミングで使われる変数かわかりやすく記述することができる。
-        else
-            render template: "users/show"
-            # ここは動作確認をしてみる必要あり
+        # else
+        #     render template: "users/show"
+        #     # ここは動作確認をしてみる必要あり
         end
     end
 

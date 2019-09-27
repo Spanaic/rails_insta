@@ -9,6 +9,8 @@ class PostImage < ApplicationRecord
     # 中間テーブルにIDを持たせる場合はthroughにしたほうが良いのかも…
     # 中間テーブルにもアソシエーションの記述は必要。
 
+    has_many :notifications, dependent: :destroy
+
     attachment :post_image
 
     validates :post_image, presence: true
@@ -67,6 +69,96 @@ class PostImage < ApplicationRecord
     end
     # イマイチこれでハッシュタグまで一緒に更新できるのか怪しい。
     # railsのコールバック機能を使ってDBに保存した直後（createアクション直後）に、ハッシュタグを抽出してhashtagテーブルに保存する処理を施す。
-end
+
+    def create_notification_favorite(current_user)
+        temp = Notification.where(["visitor_id = ? and visited_id = ? and post_image = ? and action = ?, current_user.id, user_id, id, 'favorite'"])
+        # visitor = いいねした人　visited　＝　いいねされた人 post_image = params action = like =>左の条件に当てはまるレコードを引っ張る
+        if temp.blank?
+            # .blankメソッドは.nil=値, empty=入れ物が空, .blank=値or入れ物が空
+            # notification = Notification.new(visitor_id: current_user, visited_id: user_id, post_image_id: params[:id], action: 'like')
+            # current_userをvisitor_idで受け取らせるためにactive_notificationsを選択する。
+            # .where([","])メソッドで何もヒットしなければ.newメソッドを行う。
+            notification = current_user.active_notifications.new(visited_id: user_id, post_image_id: id, action: 'favorite')
+            if notification.visitor_id == notification.visited.id
+                # 基本的に自分の投稿にもいいねできるので、自分の投稿には通知をさせないように条件を設けている。
+                # 通知を確認するアクションをすると,そのレコードのvisited_idのカラムに値がinsertされる（後ほど設定）
+                notification.checked = true
+                # 通知がcreateされたdfaultの状態だとfalseとなる。丸ポッチの表示切り替えに使用
+                # 通知確認のアクションが実行されたなら'checked'カラムの値をtrueに変更
+                # trueの変更に対して条件分岐で通知の丸ポッチの表示をoffにする記述を追加する。
+            end
+            notification.save if notification.valid?
+            # .valid?のバリデーションはmigrationファイルで記述したnull: falseのことかな？
+            end
+        end
+    end
+            # def create_notification_post_comment(current_user)
+            #     temp = Notification.where(["visitor_id = ? and visited_id = ? and post_image_id = ? and post_comment_id = ? and action = ?, current_user, user_id, params[:id], post_image.post_comment.id, 'comment"])
+            #     if temp.blank
+            #         notification = current_user.active_notifications.new(
+            #             visited_id: user_id,
+            #             post_image_id: params[:id],
+            #             post_comment_id:
+            #             action: 'comment'
+            #         )
+            #         if notification.visitor_id == norification.visited_id
+            #             notification.checked = true
+            #         end
+            #         notification.save if notification.valid?
+            #     end
+            # end
+            # コメントの通知機能はいいねと違い、何回でもコメントができるため存在確認をしない。
+
+    def create_notification_post_comment(current_user, post_comment_id)
+        # 引数にcomment_idを入れられるのは,アクションのタイミングの関係？idの特定方法とは？
+        # モデル内のメソッドは引数が設置されている。コントローラでメソッドを呼び出した際に渡される変数が引数へと代入される。
+        # ()内はすべて引数。渡される変数は呼び出すコントローラのアクションメソッド内を確認する。
+
+        # 引数はあくまで名前なので、メソッド呼び出し時に引数を渡してあげなければならない。
+
+        temp_ids = PostComment.select(:user_id).where(post_image_id: id).where.not(user_id: current_user.id).distinct
+        # .select(:user_id) = PostCommentモデルからuser_idを持ってきてね
+        # .where(post_image_id: params[:id]) = パラメータが渡されるのはコントローラでメソッドが呼び出された時なので、引数に渡される予定のインスタンス変数からidを引っ張ってくる想定で記述をする方がベター。
+        # .where.not(user_id: current_user.id) = currennt_userのcommentを除く
+        # .distinct = 同じuserのコメントは通知が重複するからやめてね
+        # もしかしたら、コメントに対する返信機能が実装されているため、.select以下の記述をされている可能性あり
+        temp_ids.each do |temp_id|
+            # temp_id＝中身はselectで取り出した（user_id）と（post_comment_id=createアクションメソッドで渡されるため、現状はnil）
+            # つまり、temp_ids=user_id(とpost_comment_id)が配列で代入されている。
+            save_notification_post_comment(current_user, comment_id, temp_id['user_id'])
+            # temp_id.save_notification_post_commentはできない。temp_idは渡された配列を.eachした数字のため。（インスタンスではないため）
+        end
+        save_notification_post_comment(current_user, comment_id, user_id) if temp_ids.blank?
+        # .select.whereで探したけど、該当のユーザが存在しない場合（コメントがない場合）投稿者に通知を送る。
+        # 引数のuser_idは、createアクションメソッド内の変数post_image.user_idから渡している。
+        # post_commentsコントローラの変数をローカル変数にしないとエラーが出ると思う（現在グローバル変数のため）
+        end
+    # end
+
+            # モデル内に定義したメソッドはインスタンスメソッドなのか、クラスメソッドなのかを理解する
+            # クラスメソッド＝self.メソッド名　＝　modelに対して使用できるメソッドとして定義される。他のコントローラ内でも利用可能
+            # クラスメソッド＝クラス全体から呼び出すメソッド
+            # インスタンスメソッド＝ モデル内の特定のインスタンスを呼び出すメソッド（変数に対してなどで使われる。）
+
+    def save_notification_post_comment(current_user, comment_id, visited_id)
+        # ()内はすべて引数。メソッド内の変数名と引数名を合わせておけば、アクションメソッドで渡された引数がメソッド内に代入される（カラム内にcreateに必要な情報が渡される）
+
+        notification = curren_user.active_notifications.new(
+            visited_id: user_id,
+            post_image_id: id,
+            post_comment_id: comment_id,
+            action: 'comment',
+        )
+        if notification.visitor_id == notification.visited_id
+            notification.checked = true
+        end
+        notification.save if notification.valid?
+        end
+    # end
+    # モデル内にメソッドを定義しておくことでVCで呼び出す（変数.create_notification_favorite）ことができるようになる。
+    # 引数に指定してるuserがcurrent_userと決まっている場合は引数として設定してもいいけど、そうでない場合はメソッド使用時に設定してもいい。
+# end
 
 # アソシエーションがうまくできていないと、favorited_by?メソッドでuninitialized constantのエラーが発生する可能性がある。
+
+# どこかのendが3つ多い。

@@ -36,6 +36,9 @@ class User < ApplicationRecord
   # モデルfollowersを指定してデータを引っ張ってくると,フォロワー(follower)を1としてフォローしている人たち(following)を集めて来る事ができる。
   # passive_relationshipsをthroughすることで、どっちのforeign_keyにidが入るか決まるため、それに紐付いたレコードをすべて取得することができる
 
+  has_many :active_notifications, class_name: "Notification", foreign_key: :visitor_id, dependent: :destroy
+  has_many :passive_notifications, class_name: "Notification", foreign_key: :visited_id, dependent: :destroy
+
 def followed_by?(user)
   # フォロワーから見て、フォローしている人の中に同じIDのユーザがいるかどうかを調べる。
   # foreign_key(フォロワーのid)が入ってるテーブルを参照して、該当のフォローしている人(folowing)を探して集める。
@@ -74,5 +77,20 @@ end
 
     user
   end
+
+  def create_notification_follow(current_user)
+    temp = Notification.where(["visitor_id = ? and visited_id = ? and action = ?, current_user.id, id, 'follow"])
+    if temp.blank?
+      notification = current_user.active_notification.new(
+        visited_id: id,
+        action: 'follow',)
+    end
+    notification.save if notification.valid?
+  end
+
+# if notification.visitor_id == notification.visited_id
+    # notification.checked = true
+# end
+# 上記の記述がつかないのはフォロー機能で自分をフォローできないように記述しているはずだから。
 
 end

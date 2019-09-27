@@ -3,6 +3,7 @@ class UsersController < ApplicationController
         @users = User.page(params[:page]).per(20).reverse_order
         # 試しに入れてる記述↓↓↓
         # @post_images = @users.post_images.id.last
+        # @notifications = Notification.all
     end
 
     def show

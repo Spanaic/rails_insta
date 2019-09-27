@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_25_005633) do
+ActiveRecord::Schema.define(version: 2019_09_26_034811) do
 
   create_table "favorites", force: :cascade do |t|
     t.integer "user_id"
@@ -31,6 +31,21 @@ ActiveRecord::Schema.define(version: 2019_09_25_005633) do
     t.integer "hashtag_id"
     t.index ["hashtag_id"], name: "index_hashtags_post_images_on_hashtag_id"
     t.index ["post_image_id"], name: "index_hashtags_post_images_on_post_image_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer "visitor_id", null: false
+    t.integer "visited_id", null: false
+    t.integer "post_image_id"
+    t.integer "post_comment_id"
+    t.string "action", null: false
+    t.boolean "checked", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_comment_id"], name: "index_notifications_on_post_comment_id"
+    t.index ["post_image_id"], name: "index_notifications_on_post_image_id"
+    t.index ["visited_id"], name: "index_notifications_on_visited_id"
+    t.index [nil], name: "index_notifications_on_visiter_id"
   end
 
   create_table "post_comments", force: :cascade do |t|

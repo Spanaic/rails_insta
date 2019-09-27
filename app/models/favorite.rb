@@ -8,5 +8,5 @@ class Favorite < ApplicationRecord
     # 中間テーブルとしてネストされていると、params[:id]のレコードにアソシエーションされた情報を一括で取得することができる。
     # current_userやviewに渡されている変数を利用すれば,そこに関連したfavoriteの情報を引き出すこともできる。
 
-
+    # 中間テーブルが中間テーブルとアソシエーションを組むことはある？
 end

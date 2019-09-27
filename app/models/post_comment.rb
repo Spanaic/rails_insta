@@ -13,5 +13,7 @@ class PostComment < ApplicationRecord
 
     has_and_belongs_to_many :users
 
+    has_many :notifications, dependent: :destroy
+
     # I wrote this for pull request
 end

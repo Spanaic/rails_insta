@@ -27,6 +27,7 @@
           <li><%= link_to "ユーザーを探す", users_path %></li>
           <li><%= link_to "新規投稿", new_post_image_path %></li>
           <li><%= link_to "マイページ", user_path(current_user) %></li>
+          <li><%= render 'notifications/circle', notifications: @notifications %></li>
         <% else %>
           <li><%= link_to "新規登録", new_user_registration_path %></li>
           <li><%= link_to "ログイン", user_session_path %></li>

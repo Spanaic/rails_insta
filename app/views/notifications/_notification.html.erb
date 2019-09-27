@@ -1,0 +1,28 @@
+<% visitor = notification.visitor_id %>
+<% visited = notification.visited_id %>
+<%# notificationの値をどこで受け取っているのか %>
+
+<span>
+    <%= link_to user_path(visitor) do %>
+        <%= "#{visitor.name}さんが" %>
+    <% end %>
+</span>
+
+<span>
+    <% case notification.action when 'follow' %>
+        <p>あなたをフォローしました</p>
+    <% when 'like' %>
+        <%= link_to "あなたの投稿", post_image_path(visited.post_image_id) %>
+        <span>がいいねされました</span>
+    <% when 'comment' %>
+        <% if notification.post_image.user.id == visited_id %>
+            <%= link_to "あなたの投稿", post_image_path(visited.post_image.id) %>
+        <% else %>
+            <%= link_to "#{visitor.name}さんの投稿", post_image_path(visitor.post_images.id) %>
+            <span>にコメントしました</span>
+        <% end %>
+    <% end %>
+    <p><%= Comment.find_by(id: comment_id)&.comment %></p>
+</span>
+
+<%= time_ago_in_words(notification.created_at).upcase %>

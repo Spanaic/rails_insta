@@ -36,4 +36,5 @@ Rails.application.routes.draw do
     # get :reply_user, on: :member
     # 多分要らない↑↑↑
   end
+  resources :notifications, only: [:index]
 end
