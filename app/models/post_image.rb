@@ -89,7 +89,7 @@ class PostImage < ApplicationRecord
             end
             notification.save if notification.valid?
             # .valid?のバリデーションはmigrationファイルで記述したnull: falseのことかな？
-            end
+            # end
         end
     end
             # def create_notification_post_comment(current_user)
@@ -125,15 +125,17 @@ class PostImage < ApplicationRecord
         temp_ids.each do |temp_id|
             # temp_id＝中身はselectで取り出した（user_id）と（post_comment_id=createアクションメソッドで渡されるため、現状はnil）
             # つまり、temp_ids=user_id(とpost_comment_id)が配列で代入されている。
-            save_notification_post_comment(current_user, comment_id, temp_id['user_id'])
+            save_notification_post_comment(current_user, @new_post_comment, temp_id['user_id'])
             # temp_id.save_notification_post_commentはできない。temp_idは渡された配列を.eachした数字のため。（インスタンスではないため）
+            # 実際に変数が渡される箇所は、渡されるインスタンス変数名を間違いなく記述する。
+            # モデルに渡される変数はすべてインスタンス変数！(じゃないと変数が渡らない)
         end
-        save_notification_post_comment(current_user, comment_id, user_id) if temp_ids.blank?
+        save_notification_post_comment(current_user, @new_post_comment, user_id) if temp_ids.blank?
         # .select.whereで探したけど、該当のユーザが存在しない場合（コメントがない場合）投稿者に通知を送る。
         # 引数のuser_idは、createアクションメソッド内の変数post_image.user_idから渡している。
         # post_commentsコントローラの変数をローカル変数にしないとエラーが出ると思う（現在グローバル変数のため）
-        end
-    # end
+        # end
+    end
 
             # モデル内に定義したメソッドはインスタンスメソッドなのか、クラスメソッドなのかを理解する
             # クラスメソッド＝self.メソッド名　＝　modelに対して使用できるメソッドとして定義される。他のコントローラ内でも利用可能
@@ -142,8 +144,9 @@ class PostImage < ApplicationRecord
 
     def save_notification_post_comment(current_user, comment_id, visited_id)
         # ()内はすべて引数。メソッド内の変数名と引数名を合わせておけば、アクションメソッドで渡された引数がメソッド内に代入される（カラム内にcreateに必要な情報が渡される）
+        # 引数と変数を混同しないように気をつける。
 
-        notification = curren_user.active_notifications.new(
+        notification = current_user.active_notifications.new(
             visited_id: user_id,
             post_image_id: id,
             post_comment_id: comment_id,
@@ -153,12 +156,12 @@ class PostImage < ApplicationRecord
             notification.checked = true
         end
         notification.save if notification.valid?
-        end
-    # end
+        # end
+        # ifが途中で入る時はendで閉じなくても良い
+    end
     # モデル内にメソッドを定義しておくことでVCで呼び出す（変数.create_notification_favorite）ことができるようになる。
     # 引数に指定してるuserがcurrent_userと決まっている場合は引数として設定してもいいけど、そうでない場合はメソッド使用時に設定してもいい。
-# end
+end
 
 # アソシエーションがうまくできていないと、favorited_by?メソッドでuninitialized constantのエラーが発生する可能性がある。
 
-# どこかのendが3つ多い。

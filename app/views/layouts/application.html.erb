@@ -9,45 +9,88 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
+
   <body>
 
-  <header>
-    <h1><%= link_to "Insta!", root_path %></h1>
+    <%# テスト %>
 
-<%# ransackのフォーム部分 %>
-    <%= search_form_for @search, url: users_path do |f| %>
-      <%= f.text_field :name_or_profile_name_cont, placeholder: '名前orユーザー名を入力...' %>
-      <%= f.submit ("検索する") %>
-    <% end %>
-<%# url:オプションを付け忘れない %>
+      <div class="container">
+        <nav class="navbar header-field">
+          <div class="navbar-header">
+            <%# <%= link_to "Insta!", root_path do %>
+              <a class="title" href="/">
+                <i class="fas fa-camera-retro"></i>
+                <span>|</span>
+                <%# <img src="images/Instagram_logo.png" whidth="200px" height="200px"> %>
+                <span>Insta!</span>
+              </a>
+            <%# <% end %>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#gnavi">
+              <span class="sr-only">メニュー</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
 
-    <nav>
-        <ul>
-        <% if user_signed_in? %>
-          <li><%= link_to "ユーザーを探す", users_path %></li>
-          <li><%= link_to "新規投稿", new_post_image_path %></li>
-          <li><%= link_to "マイページ", user_path(current_user) %></li>
-          <li><%= render 'notifications/circle', notifications: @notifications %></li>
-        <% else %>
-          <li><%= link_to "新規登録", new_user_registration_path %></li>
-          <li><%= link_to "ログイン", user_session_path %></li>
-        </ul>
-        <% end %>
-    </nav>
-  </header>
+          <div id="gnavi" class="collapse navbar-collapse navbar-right">
+            <ul class="nav navbar-nav">
+              <% if user_signed_in? %>
+                <li class="search-box">
+                  <%= search_form_for @search, url: users_path do |f| %>
+                    <%= f.text_field :name_or_profile_name_cont, placeholder: '名前orユーザー名を入力...' %>
+                    <%= f.submit ("検索する") %>
+                  <% end %>
+                </li>
+                <li class="list-icon"><%= link_to new_post_image_path do %>
+                      <i class="fas fa-plus-circle"></i>
+                    <% end %>
+                </li>
 
-    <%= yield %>
+                <li class="list-icon"><%= link_to users_path do %>
+                      <i class="far fa-compass"></i>
+                    <% end %>
+                </li>
+                <li><%= render 'notifications/circle', notifications: @notifications %></li>
+                <li class="list-icon"><%= link_to user_path(current_user.profile_name) do %>
+                      <i class="fas fa-user-alt"></i>
+                    <% end %>
+                </li>
+              <% else %>
+               <li class="list-icon"><%= link_to new_user_registration_path do %>
+                      <i class="fas fa-user-plus"></i>
+                    <% end %>
+                </li>
 
-  <footer>
-    <nav>
-      <% if user_signed_in? %>
-        <ul>
-          <%# <li><%= link_to "プロフィール編集", edit_user_path(current_user) %>
-          <li><%= link_to "ログアウト", destroy_user_session_path, method:  :delete %></li>
-        </ul>
-      <% end %>
-    </nav>
-  </footer>
+                <li class="list-icon"><%= link_to user_session_path do %>
+                      <i class="fas fa-sign-in-alt"></i>
+                    <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    <%# テスト %>
 
+    <main class="main-box">
+      <%= yield %>
+    </main>
+      <div class="container">
+        <footer>
+          <nav>
+            <% if user_signed_in? %>
+              <ul>
+                <%# <li><%= link_to "プロフィール編集", edit_user_path(current_user) %>
+                <li><%= link_to destroy_user_session_path, method:  :delete do %>
+                      <i class="fas fa-sign-out-alt">ログアウト</i>
+                    <% end %>
+                </li>
+              </ul>
+            <% end %>
+          </nav>
+        </footer>
+      </div>
+    </div>
   </body>
 </html>

@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   # テーブル数が10~20個ほどになったときに、アクション内の書き方が複雑化するが、ネストしておくと記述量が少し減る。
 
   resources :users, param: :profile_name, only: [:edit, :index, :update, :show, :index] do
-    resource :relationships, only: [:create, :destroy]
+    resource :relationships, param: :profile_name, only: [:create, :destroy]
     get :follows, on: :member
     get :followers, on: :member
 

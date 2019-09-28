@@ -6,6 +6,11 @@ class PostImagesController < ApplicationController
         @post_images = PostImage.page(params[:page]).per(6).reverse_order
         # kaminariでアクションごとに表示ページ数を変える場合は.per(好きな数字)をparam[:page]の後に指定する。
         @notifications = Notification.all
+        @randoms = User.order("RANDOM()").limit(20)
+        # .order("RAND()")でデータを取得する場合、今のデータベースの件数と、表示する件数の整合性に気をつける
+        # 3件しか登録されていないのに20件ランダムに取得するような記述をするとエラーとなるagument error
+        # .order("RAND()")メソッドはRAND()内の引数の数字だけランダムにレコードを取得する。()に数字が入ってなければ全件取得・・・かな？
+        # .limit()メソッドは()内の引数の数字ずつ変数へと代入する
     end
 
     def new

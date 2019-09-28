@@ -1,14 +1,16 @@
 class PostCommentsController < ApplicationController
     def create
         @post_image = PostImage.find(params[:post_image_id])
-        post_comment = PostComment.new(post_comment_params)
-        post_comment.post_image_id = @post_image.id
-        post_comment.user_id = current_user.id
+        @post_comment = PostComment.new(post_comment_params)
+        @post_comment.post_image_id = @post_image.id
+        @post_comment.user_id = current_user.id
+        # post_image = post_comment.post_image
         # create,destroy,updateなどアクションメソッド内で完結する場合（Viewに変数を渡さない場合）はローカル変数を使っておくほうがセキュリティ上良い。
-        if  post_comment.save
-
-            post_comment.create_notification_post_comment(current_user, post_comment.id)
-
+        if  @post_comment.save
+            # @new_post_comment = PostComment.where(user_id: current_user.id).maximum(:id)
+            @post_image.create_notification_post_comment(current_user, @post_comment)
+            # モデル内に定義されたメソッドを呼び出すときは、そのモデルが入った変数に対して行う。使用されるインスタンスはローカル変数でも構わない。
+            # 渡さなければならない引数は、変数の場合インスタンス変数（@が付いたものを必ず使用する）でなくてはならない。
             redirect_to post_image_path(params[:post_image_id])
         else
             render template: "post_images/show"

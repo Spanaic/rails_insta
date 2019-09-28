@@ -1,0 +1,26 @@
+
+[1mFrom:[0m /vagrant/insta/app/controllers/post_comments_controller.rb @ line 11 PostCommentsController#create:
+
+     [1;34m2[0m: [32mdef[0m [1;34mcreate[0m
+     [1;34m3[0m:     @post_image = [1;34;4mPostImage[0m.find(params[[33m:post_image_id[0m])
+     [1;34m4[0m:     post_comment = [1;34;4mPostComment[0m.new(post_comment_params)
+     [1;34m5[0m:     post_comment.post_image_id = @post_image.id
+     [1;34m6[0m:     post_comment.user_id = current_user.id
+     [1;34m7[0m:     [1;34m# create,destroy,updateなどアクションメソッド内で完結する場合（Viewに変数を渡さない場合）はローカル変数を使っておくほうがセキュリティ上良い。[0m
+     [1;34m8[0m:     [32mif[0m  post_comment.save
+     [1;34m9[0m: 
+    [1;34m10[0m:         binding.pry
+ => [1;34m11[0m:         post_comment.create_notification_post_comment(current_user, post_comment.id)
+    [1;34m12[0m:         redirect_to post_image_path(params[[33m:post_image_id[0m])
+    [1;34m13[0m:     [32melse[0m
+    [1;34m14[0m:         render [35mtemplate[0m: [31m[1;31m"[0m[31mpost_images/show[1;31m"[0m[31m[0m
+    [1;34m15[0m:         [1;34m# ネストされたコントローラのレンダー先は一体どこに？[0m
+    [1;34m16[0m:         [1;34m# template:オプションから、"コントローラ/アクション"で呼び出しを行う[0m
+    [1;34m17[0m:         [1;34m# 上記はviewも呼び出す場合[0m
+    [1;34m18[0m:         [1;34m# if内、renderの前に変数を定義することで、どのタイミングで使われる変数かわかりやすく記述することができる。[0m
+    [1;34m19[0m:     [1;34m# else[0m
+    [1;34m20[0m:     [1;34m#     render template: "users/show"[0m
+    [1;34m21[0m:     [1;34m#     # ここは動作確認をしてみる必要あり[0m
+    [1;34m22[0m:     [32mend[0m
+    [1;34m23[0m: [32mend[0m
+

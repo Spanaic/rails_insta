@@ -39,17 +39,17 @@ class User < ApplicationRecord
   has_many :active_notifications, class_name: "Notification", foreign_key: :visitor_id, dependent: :destroy
   has_many :passive_notifications, class_name: "Notification", foreign_key: :visited_id, dependent: :destroy
 
-def followed_by?(user)
-  # フォロワーから見て、フォローしている人の中に同じIDのユーザがいるかどうかを調べる。
-  # foreign_key(フォロワーのid)が入ってるテーブルを参照して、該当のフォローしている人(folowing)を探して集める。
-  # その中に引数userに入っているidとpassive_relationshipsのfollowing_idを照らし合わせて存在するかしないかを確認するメソッド
-  # 何度も言うけど,passiveだからfollowed_idは埋まってるよ。
-  passive_relationships.find_by(following_id: user.id).present?
-  # .presentメソッドは、モデルから指定されたカラムの配列を作り出して、配列に空がないかどうか調べるメソッド
-  # 一度配列を作るので、処理に時間がかかる可能性がある
-  # .exists?などは指定されたカラムを見て、該当するidなどがあればその時点でtrueを返すため、処理が早くなりそう。
-  # whereではexists,find_byではpresentの方が効率が良いとか、決まりがあるのかな？
-end
+  def followed_by?(user)
+    # フォロワーから見て、フォローしている人の中に同じIDのユーザがいるかどうかを調べる。
+    # foreign_key(フォロワーのid)が入ってるテーブルを参照して、該当のフォローしている人(folowing)を探して集める。
+    # その中に引数userに入っているidとpassive_relationshipsのfollowing_idを照らし合わせて存在するかしないかを確認するメソッド
+    # 何度も言うけど,passiveだからfollowed_idは埋まってるよ。
+    passive_relationships.find_by(following_id: user.id).present?
+    # .presentメソッドは、モデルから指定されたカラムの配列を作り出して、配列に空がないかどうか調べるメソッド
+    # 一度配列を作るので、処理に時間がかかる可能性がある
+    # .exists?などは指定されたカラムを見て、該当するidなどがあればその時点でtrueを返すため、処理が早くなりそう。
+    # whereではexists,find_byではpresentの方が効率が良いとか、決まりがあるのかな？
+  end
 
   attachment :profile_image
 
@@ -79,13 +79,14 @@ end
   end
 
   def create_notification_follow(current_user)
-    temp = Notification.where(["visitor_id = ? and visited_id = ? and action = ?, current_user.id, id, 'follow"])
+    temp = Notification.where(["visitor_id = ? and visited_id = ? and action = ?", current_user.id, id, 'follow'])
     if temp.blank?
-      notification = current_user.active_notification.new(
+      notification = current_user.active_notifications.new(
         visited_id: id,
         action: 'follow',)
+
+      notification.save if notification.valid?
     end
-    notification.save if notification.valid?
   end
 
 # if notification.visitor_id == notification.visited_id

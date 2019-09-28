@@ -1,2 +1,27 @@
-<%= render "post_images/list", post_images: @post_images %>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <%= render "post_images/list", post_images: @post_images %>
+        </div>
+
+        <div class="col-md-5">
+            <div class="recommend-users-box">
+                <p class="recommend-users-title">おすすめユーザー</p>
+                <% @randoms.each do |random| %>
+                    <%= link_to user_path(random.profile_name) do %>
+                        <ul>
+                            <li class="list-style">
+                                <span><%= attachment_image_tag random, :profile_image, :fill, 40, 40, format: 'jpeg', size: '40x40', fallback: 'no_image.jpg', class: "profile-image-style" %></span>
+                                <span><%= random.profile_name %></span>
+                                <span class="float-right"><%= link_to "フォローする", user_relationships_path(random.profile_name), method: :post %></span>
+                            </li>
+                        </ul>
+                    <% end %>
+                <% end %>
+            <%# <%= paginate randoms, class: "paginate" %>
+            <%# order("RAND()").limit()の時はpaginateしなくても表示件数を制御できる %>
+            </div>
+        </div>
+    </div>
+</div>

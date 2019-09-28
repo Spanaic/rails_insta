@@ -1,62 +1,65 @@
-<% post_images.each do |post_image| %>
-    <div class="continer">
-        <div class="col">
+            <% post_images.each do |post_image| %>
+                <div class="post-images-index-box">
+                    <% if user_signed_in? %>
 
-            <% if user_signed_in? %>
+                        <%# プロフィール画像の表示も追記する %>
+                        <div class="post-image-user">
+                            <%= link_to user_path(post_image.user.profile_name) do %>
+                                <span><%= attachment_image_tag post_image.user, :profile_image, :fill, 32, 32, format: 'jpeg', fallback: 'no_image.jpg', class: "profile-image-style" %></span>
+                            <% end %>
 
-            <%# プロフィール画像の表示も追記する %>
-                <%= link_to user_path(post_image.user.profile_name) do %>
-                <p><%= post_image.user.profile_name %></p>
-                <% end %>
+                            <%= link_to user_path(post_image.user.profile_name) do %>
+                                <span><%= post_image.user.profile_name %></span>
+                            <% end %>
+                        </div>
+                        <%= link_to post_image_path(post_image.id) do %>
+                            <p><%= attachment_image_tag post_image, :post_image, :fill, 500, 500, format: 'jpeg' %></p>
+                        <% end %>
 
-                <%= link_to post_image_path(post_image.id) do %>
-                <p><%= attachment_image_tag post_image, :post_image, :fill, 480, 270, format: 'jpeg' %></p>
-                <% end %>
-
-                <%# 非同期を乗っけたパ＝シャルを記述 %>
-                <%= render 'favorites/favorite', post_image: post_image %>
-                <%# レンダーに渡す変数は、アクションメソッドで定義した変数以外にもただの数字や、.eachで切り分けたブロック変数も代入することができる。%>
-                <%# 非同期を乗っけたパーシャルを記述 %>
+                        <%# 非同期を乗っけたパ＝シャルを記述 %>
+                        <div class="favorite-box">
+                            <%= render 'favorites/favorite', post_image: post_image %>
+                        </div>
+                        <%# レンダーに渡す変数は、アクションメソッドで定義した変数以外にもただの数字や、.eachで切り分けたブロック変数も代入することができる。%>
+                        <%# 非同期を乗っけたパーシャルを記述 %>
 
 
-                <%# 非同期前のいいねの記述↓↓↓ %>
-                <%# <% if post_image.favorited_by?(current_user) %>
-                    <%# <%= link_to post_image_favorites_path(post_image.id), method:  :delete do %>
-                        <%# <i class="fas fa-heart" style="color: red;"></i> %>
-                        <%# <%= "#{post_image.favorites.count}いいね" %>
-                    <%# <% end %>
-                <%# <% else %>
-                    <%# <%= link_to post_image_favorites_path(post_image.id), method:  :post do %>
-                        <%# <i class="fas fa-heart"></i> %>
-                        <%# <%= "#{post_image.favorites.count}いいね" %>
-                    <%# <% end %>
-                <%# <% end %>
-                <%# 非同期前のいいねの記述↑↑↑ %>
+                        <%# 非同期前のいいねの記述↓↓↓ %>
+                        <%# <% if post_image.favorited_by?(current_user) %>
+                            <%# <%= link_to post_image_favorites_path(post_image.id), method:  :delete do %>
+                                <%# <i class="fas fa-heart" style="color: red;"></i> %>
+                                <%# <%= "#{post_image.favorites.count}いいね" %>
+                            <%# <% end %>
+                        <%# <% else %>
+                            <%# <%= link_to post_image_favorites_path(post_image.id), method:  :post do %>
+                                <%# <i class="fas fa-heart"></i> %>
+                                <%# <%= "#{post_image.favorites.count}いいね" %>
+                            <%# <% end %>
+                        <%# <% end %>
+                        <%# 非同期前のいいねの記述↑↑↑ %>
 
-                <%# できれば各種SNSシェアボタンをここに実装予定 %>
+                        <%# できれば各種SNSシェアボタンをここに実装予定 %>
+                        <div class="caption-box">
+                            <%= render_with_hashtags(post_image.caption) %>
+                        </div>
+                        <%# indexとshowページだけユーザをログインさせたい %>
+                    <% else %>
+                        <%= link_to user_path(post_image.user.profile_name) do %>
+                        <p><%= post_image.user.profile_name %></p>
+                        <% end %>
 
-                <%= render_with_hashtags(post_image.caption) %>
+                        <%= link_to post_image_path(post_image.id) do %>
+                        <p><%= attachment_image_tag post_image, :post_image, :fill, 480, 270, format: 'jpeg' %></p>
+                        <% end %>
+                        <span><%= post_image.favorites_count %></span>
+                        <%= post_image.caption %>
+                    <% end %>
+                        <%# <%= form_for[post_image, post_comment] do |f| %>
 
-            <%# indexとshowページだけユーザをログインさせたい %>
-            <% else %>
-                <%= link_to user_path(post_image.user.profile_name) do %>
-                <p><%= post_image.user.profile_name %></p>
-                <% end %>
+                            <%# <%= f.text_are :comment, placeholder: "コメントを書く" %>
 
-                <%= link_to post_image_path(post_image.id) do %>
-                <p><%= attachment_image_tag post_image, :post_image, :fill, 480, 270, format: 'jpeg' %></p>
-                <% end %>
-                 <span><%= post_image.favorites_count %></span>
-                <%= post_image.caption %>
+                            <%# <%= f.submit "送信" %>
+                        <%# <% end %>
+                </div>
             <% end %>
-        </div>
-        <%# <%= form_for[post_image, post_comment] do |f| %>
-
-            <%# <%= f.text_are :comment, placeholder: "コメントを書く" %>
-
-            <%# <%= f.submit "送信" %>
-        <%# <% end %>
-    </div>
-<% end %>
-
-<%= paginate post_images, class: "paginate" %>
+            <%= paginate post_images, class: "paginate" %>
