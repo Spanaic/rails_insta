@@ -1,131 +1,173 @@
-<div class="container">
-
-    <h1>投稿詳細</h1>
-
-    <%= attachment_image_tag @post_image, :post_image %>
-
-    <%# いいねアイコンを導入する %>
-    <%# いいねをした人かどうかをif favorited_by?メソッドで選り分ける %>
-    <%# メソッドには必ず変数を渡す。 %>
-
-    <%# <% if @post_image.favorited_by?(current_user) %>
-    <%# この@post_imageは現在ログインしているユーザに[いいね]されましたか？ %>
-        <%# <%= link_to post_image_favorite_path(@post_image.id, @favorite.id), method:  :delete do %>
-            <%# <i class="fa fa-heart" area-hidden="true" style="color: red;"></i> %>
-            <%# <%= "#{@post_image.favorites.count}いいね" %>
-            <%# いいねされている状態。赤いハートのアイコンにdeleteのpathを貼る %>
-        <%# <% end %>
-    <%# <% else %>
-        <%# <%= link_to post_image_favorites_path(@post_image.id), method:  :post do%>
-            <%# <i class="fa fa-heart" aria-hidden="true"></i> %>
-            <%# <%= "#{@post_image.favorites.count}いいね" %>
-            <%# いいねされていない状態。空っぽのハートにpostのpathを貼る %>
-        <%# <% end %>
-    <%# <% end %>
-
-    <%= attachment_image_tag @post_image.user, :profile_image, :fill, 300, 300, format: 'jpeg', fallback: "no_image.jpg", size: "300x300" %>
-
-    <%= @post_image.user.name %>
-
-    <% if user_signed_in? %>
-
-        <% if @post_image.user.followed_by?(current_user) %>
-            <%= link_to "フォローをやめる", user_relationships_path(@post_image.user.profile_name), method: :delete %>
-        <% else %>
-            <%= link_to "フォローする", user_relationships_path(@post_image.user.profile_name), method: :post %>
-        <% end %>
-
-        <%# <% if @post_image.favorited_by?(current_user) %>
-                    <%# <%= link_to post_image_favorites_path(@post_image.id, @favorite.id) method:  :delete do %>
-                    <%# 上記の記述でfind(params[:id])でパラメータを特定できない理由は、リンクをクリックしてリクエストを送る段階でfavoriteのマスタIDがわかっていないから。（routeのpost_image#showを参照） %>
-                    <%# この段階でわかっていれば,findメソッドにそのパラメータを渡して,Favoriteモデルに探してこい！と命令できる %>
-                    <%# 上記の書き方をしたければ、showアクションで@favoriteに変数を渡す必要がある %>
-                    <%# そのときにわかっているIDを使用して、別のモデルのマスタIDを取得できるメソッド（find_by）を書く必要がある。 %>
-
-            <%# <%= link_to post_image_favorites_path(@post_image.id), method:  :delete do %>
-                    <%# current_user.favorites.find_by(post_image_id: @post_image.id).id,の記述をすることでfavoriteのマスタIDを特定することができる %>
-                    <%# 自分がうまくできなかった理由は,コメント機能と同じように削除機能を実行するときに,resourcesで付与したIDを特定していなかった(viewで特定させる場合はshowアクションの時点で渡す必要がある、もしくは上記の記述で特定) %>
-                    <%# PostImageモデルの中にfavorited_byメソッドを記述することで、そのモデルを使用する際（.newや.findなど）にfavorited_byメソッドをいつでも（modelでもviewでも）呼び出すことができるようになる %>
-
-                <%# <i class="fa fa-heart" area-hidden="true" style="color: red;"></i> %>
-                <%# <%= "#{@post_image.favorites.count}いいね" %>
-            <%# <% end %>
-        <%# <% else %>
-            <%# <%= link_to post_image_favorites_path(@post_image.id), method:  :post do %>
-                <%# <i class="fa fa-heart" aria-hidden="true"></i> %>
-                <%# <%= "#{@post_image.favorites.count}いいね" %>
-            <%# <% end %>
-        <%# <% end %>
-
-        <%# 非同期を乗っけたパ＝シャルを記述 %>
-        <%= render 'favorites/favorite', post_image: @post_image %>
-        <%# 非同期を乗っけたパーシャルを記述 %>
-
-        <%# この辺にSNSシェアボタンを実装予定 %>
-
-        <% if current_user == @post_image.user.id %>
-            <%= link_to "編集", edit_post_image_path(@post_image.id) %>
-            <%= link_to "削除", post_image_path(@post_image.id), method:  :delete %>
-        <% end %>
-
-    <%# <%= @post_image.caption %>
-    <%= render_with_hashtags(@post_image.caption) %>
-
-
-
-    <%# コメント入力欄のカスタマイズテスト %>
-
-    <div class="row">
-        <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
-        <div>
-            <% @post_image.post_comments.each do |post_comment| %>
-
-                <p><%= attachment_image_tag post_comment.user, :profile_image %></p>
-
-                <p><%= post_comment.user.name %></p>
-
-                <%# <p><%= post_comment.comment %>
-                <p><%= render_with_post_comment(post_comment.comment) %></p>
-                <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
-
-                <p><%= link_to "返信する", reply_post_image_path(@post_image.id), remote: true %></p>
-
-                <% if current_user == post_comment.user %>
-                    <%= link_to "コメントを削除", post_image_post_comment_path(@post_image.id, post_comment.id), method:  :delete %>
-                <% end %>
-                <%# destroyにidが付与されてなかった場合はpost_image_post_comment’s’となっていたが,idが付与されたことでpathの記述が複数型から単数型へと変わる %>
-                <%# destroyにIDが付与されたことで、destory時に指定するidが2つになる。(特定の画像id, 特定のコメントid)2つを指定することは可能であり、それはrails routesで確認できる %>
-
-            <div id="reply_user">
-                <%= render 'post_comments/form', post_image: @post_image, post_comment: post_comment, new_post_comment: @new_post_comment, favorite: @favorite %>
+<div class="container-fluid">
+    <div class="row no-gutters">
+    <div class="col-md-3"></div>
+        <div class="col-md-4">
+            <%# <h1>投稿詳細</h1> %>
+            <div class="post-image-box-left">
+                <%= attachment_image_tag @post_image, :post_image, :fill, 600, 600, format: 'jpeg', fallback: "no_image.jpg", size: "600x600" %>
             </div>
-            <% end %>
         </div>
+                    <%# いいねアイコンを導入する %>
+                    <%# いいねをした人かどうかをif favorited_by?メソッドで選り分ける %>
+                    <%# メソッドには必ず変数を渡す。 %>
+
+                    <%# <% if @post_image.favorited_by?(current_user) %>
+                    <%# この@post_imageは現在ログインしているユーザに[いいね]されましたか？ %>
+                        <%# <%= link_to post_image_favorite_path(@post_image.id, @favorite.id), method:  :delete do %>
+                            <%# <i class="fa fa-heart" area-hidden="true" style="color: red;"></i> %>
+                            <%# <%= "#{@post_image.favorites.count}いいね" %>
+                            <%# いいねされている状態。赤いハートのアイコンにdeleteのpathを貼る %>
+                        <%# <% end %>
+                    <%# <% else %>
+                        <%# <%= link_to post_image_favorites_path(@post_image.id), method:  :post do%>
+                            <%# <i class="fa fa-heart" aria-hidden="true"></i> %>
+                            <%# <%= "#{@post_image.favorites.count}いいね" %>
+                            <%# いいねされていない状態。空っぽのハートにpostのpathを貼る %>
+                        <%# <% end %>
+                    <%# <% end %>
+        <div class="col-md-3">
+            <div class="post-image-box-right">
+                <div class="post-image-profile-box">
+                    <%= link_to user_path(@post_image.user.id) do %>
+                        <span><%= attachment_image_tag @post_image.user, :profile_image, :fill, 32, 32, format: 'jpeg', fallback: "no_image.jpg", size: "32x32", class: "profile-image-style" %></span>
+
+                        <span><%= @post_image.user.name %></span>
+                    <% end %>
+
+                <% if user_signed_in? %>
+                    <div class="post-image-profile-follow-box">
+                        <% if @post_image.user.followed_by?(current_user) %>
+                            <%= link_to "フォローをやめる", user_relationships_path(@post_image.user.profile_name), method: :delete %>
+                        <% else %>
+                            <%= link_to "フォローする", user_relationships_path(@post_image.user.profile_name), method: :post %>
+                        <% end %>
+                    </div>
+                </div>
+                    <%# <% if @post_image.favorited_by?(current_user) %>
+                                <%# <%= link_to post_image_favorites_path(@post_image.id, @favorite.id) method:  :delete do %>
+                                <%# 上記の記述でfind(params[:id])でパラメータを特定できない理由は、リンクをクリックしてリクエストを送る段階でfavoriteのマスタIDがわかっていないから。（routeのpost_image#showを参照） %>
+                                <%# この段階でわかっていれば,findメソッドにそのパラメータを渡して,Favoriteモデルに探してこい！と命令できる %>
+                                <%# 上記の書き方をしたければ、showアクションで@favoriteに変数を渡す必要がある %>
+                                <%# そのときにわかっているIDを使用して、別のモデルのマスタIDを取得できるメソッド（find_by）を書く必要がある。 %>
+
+                        <%# <%= link_to post_image_favorites_path(@post_image.id), method:  :delete do %>
+                                <%# current_user.favorites.find_by(post_image_id: @post_image.id).id,の記述をすることでfavoriteのマスタIDを特定することができる %>
+                                <%# 自分がうまくできなかった理由は,コメント機能と同じように削除機能を実行するときに,resourcesで付与したIDを特定していなかった(viewで特定させる場合はshowアクションの時点で渡す必要がある、もしくは上記の記述で特定) %>
+                                <%# PostImageモデルの中にfavorited_byメソッドを記述することで、そのモデルを使用する際（.newや.findなど）にfavorited_byメソッドをいつでも（modelでもviewでも）呼び出すことができるようになる %>
+
+                            <%# <i class="fa fa-heart" area-hidden="true" style="color: red;"></i> %>
+                            <%# <%= "#{@post_image.favorites.count}いいね" %>
+                        <%# <% end %>
+                    <%# <% else %>
+                        <%# <%= link_to post_image_favorites_path(@post_image.id), method:  :post do %>
+                            <%# <i class="fa fa-heart" aria-hidden="true"></i> %>
+                            <%# <%= "#{@post_image.favorites.count}いいね" %>
+                        <%# <% end %>
+                    <%# <% end %>
+                    <%= render_with_hashtags(@post_image.caption) %>
+
+                    <%# 非同期を乗っけたパ＝シャルを記述 %>
+                    <%# 非同期を乗っけたパーシャルを記述 %>
+
+                    <%# この辺にSNSシェアボタンを実装予定 %>
+
+
+                    <%# <%= @post_image.caption %>
+
+
+
+                    <%# コメント入力欄のカスタマイズテスト %>
+
+                    <%# <div class="row"> %>
+                    <div class="post-image-comment-box">
+                        <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
+                        <% @post_comments.each do |post_comment| %>
+                            <div class="each-comment-box">
+                                <div class="comment-profile-image-box">
+                                    <span><%= attachment_image_tag post_comment.user, :profile_image, :fill, 32, 32, format: 'jpeg', fallback: 'no_image.jpg', size: '32x32', class: 'profile-image-style' %></span>
+                                </div>
+                                <div class="comment-body-box">
+                                    <span><%= post_comment.user.profile_name %></span>
+
+                                    <%# <p><%= post_comment.comment %>
+                                    <span><%= render_with_post_comment(post_comment.comment) %></span>
+                                    <%# コメントの時間の表記が邪魔だから消す？ %>
+                                    <%# <p><%= post_comment.created_at.strftime('%Y/%m/%d')</p> %>
+
+                                    <%# <p><%= link_to "返信する", reply_post_image_path(@post_image.id), remote: true %>
+
+                                    <% if current_user == post_comment.user %>
+                                        <%= link_to "コメントを削除", post_image_post_comment_path(@post_image.id, post_comment.id), method:  :delete %>
+                                    <% end %>
+                                    <%# destroyにidが付与されてなかった場合はpost_image_post_comment’s’となっていたが,idが付与されたことでpathの記述が複数型から単数型へと変わる %>
+                                    <%# destroyにIDが付与されたことで、destory時に指定するidが2つになる。(特定の画像id, 特定のコメントid)2つを指定することは可能であり、それはrails routesで確認できる %>
+
+                                    <%# いつかコメント主への返信機能を実装してみせる %>
+                                    <%# <div id="reply_user">
+                                        <%= render 'post_comments/form', post_image: @post_image, post_comment: post_comment, new_post_comment: @new_post_comment, favorite: @favorite %>
+                                    <%# </div> %>
+                                </div>
+                            </div>
+                        <% end %>
+                        <%= paginate @post_comments, class: 'paginate' %>
+                    </div>
+
+                    <div class="post-image-profile-edit-box">
+                        <%= render 'favorites/favorite', post_image: @post_image %>
+                        <% if current_user.profile_name == @post_image.user.profile_name %>
+                            <span><%= link_to "編集", edit_post_image_path(@post_image.id) %></span>
+                            <span><%= link_to "削除", post_image_path(@post_image.id), method:  :delete %></span>
+                        <% end %>
+                    </div>
+
+                    <div class="post-image-comment-form-box">
+                        <%= form_for [@post_image, @new_post_comment] do |f| %>
+                            <% if @new_post_comment.errors.any? %>
+                                <%# form_forメソッドでもfではなく,formが入力される変数を指定してあげる %>
+                                <%= "#{@new_post_comment.errors.count}件のエラーがあります。" %>
+                                <% @new_post_comment.errors.full_messages.each do |message| %>
+                                    <%= message %>
+                                <% end %>
+                            <% end %>
+                            <div class="form-inline form-box">
+                                <div class="form-group">
+                                    <span class="form-comment-box">
+                                        <%= f.text_area :comment, class: "form-control form-comment", placeholder: "コメントを追加..." %>
+                                    </span>
+                                    <span class="form-comment-submit-box">
+                                        <%= f.submit "投稿する", class: "form-control form-comment-submit" %>
+                                    </span>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                    <%# コメント入力欄のカスタマイズテスト %>
+
+
+
+
+                    <%# form_forのレンダーをここに記述 %>
+
+                    <%# form_forのレンダーをここに記述 %>
+
+                <% else %>
+                    <%= @post_image.caption %>
+                    <%= "#{@post_image.user.followers.count}人のフォロワー" %>
+                    <%= "#{@post_image.favorites.count}いいね" %>
+                    <div class="container">
+                        <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
+                        <div>
+                            <% @post_image.post_comments.each do |post_comment| %>
+                                <p><%= attachment_image_tag post_comment.user, :profile_image, :fill, 32, 32, format: 'jpeg', fallback: 'no_image.jpg', size: '32x32', class: 'profile-image-style' %></p>
+                                <p><%= post_comment.user.name %></p>
+                                <p><%= post_comment.comment %></p>
+                                <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
+                            <% end %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
     </div>
-
-    <%# コメント入力欄のカスタマイズテスト %>
-
-
-
-
-    <%# form_forのレンダーをここに記述 %>
-
-    <%# form_forのレンダーをここに記述 %>
-
-    <% else %>
-        <%= @post_image.caption %>
-        <%= "#{@post_image.user.followers.count}人のフォロワー" %>
-        <%= "#{@post_image.favorites.count}いいね" %>
-        <div class="container">
-            <p><%= "コメント#{@post_image.post_comments.count}件" %></p>
-            <div>
-                <% @post_image.post_comments.each do |post_comment| %>
-                    <p><%= attachment_image_tag post_comment.user, :profile_image %></p>
-                    <p><%= post_comment.user.name %></p>
-                    <p><%= post_comment.comment %></p>
-                    <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
-                <% end %>
-            </div>
-        </div>
-    <% end %>
 </div>

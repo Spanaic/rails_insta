@@ -16,9 +16,12 @@ class PostImage < ApplicationRecord
     validates :post_image, presence: true
     validates :caption, presence: true, length: {maximum: 140}
 
-    def favorited_by?(user)
-        favorites.where(user_id: user.id).exists?
+    def favorited_by?(current_user)
+        favorites.where(user_id: current_user.id).exists?
     end
+    # favorited_by?メソッドに変数が正しく渡せてなかったのが原因で、if文の条件分岐をうまく活用できず、同じユーザが何回でもいいねできるようになっていた。
+    # createとdestroyメソッドはうまく動いていたので、それ以外の場所を注意深く見ることも大事。
+    # パーシャルに渡す変数を定義している場所はしっかりと把握しておくこと。
 
     # 下村さんより
     # モデルに記述することで、PostImage.find等と同じようにメソッドとして、どこでも使用することができるようになる。今回はviewの条件分岐で呼び出すためにモデルに記述されている。

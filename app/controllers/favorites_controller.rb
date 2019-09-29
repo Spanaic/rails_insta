@@ -29,7 +29,7 @@ class FavoritesController < ApplicationController
         favorite.save
         # .createはレコードに値をinsertしてsaveまでの処理を行う
 
-        @post_image.create_notification_favorite(current_user)
+        # @post_image.create_notification_favorite(current_user)
 
         @favorites = Favorite.where(post_image_id: params[:post_image_id])
         # favoritesテーブルにある該当のpost_image_idをすべて.whereメソッドで引っ張ってくる。

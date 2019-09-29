@@ -21,7 +21,7 @@ class PostImagesController < ApplicationController
         @post_image = PostImage.find(params[:id])
         @new_post_comment = PostComment.new
         @favorite = Favorite.new
-        # @post_comments = @post_image.post_comments
+        @post_comments = @post_image.post_comments.page(params[:page]).per(4).reverse_order
     end
 
     def create
