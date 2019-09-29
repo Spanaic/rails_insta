@@ -74,7 +74,7 @@ class PostImage < ApplicationRecord
     # railsのコールバック機能を使ってDBに保存した直後（createアクション直後）に、ハッシュタグを抽出してhashtagテーブルに保存する処理を施す。
 
     def create_notification_favorite(current_user)
-        temp = Notification.where(["visitor_id = ? and visited_id = ? and post_image = ? and action = ?, current_user.id, user_id, id, 'favorite'"])
+        temp = Notification.where(["visitor_id = ? and visited_id = ? and post_image_id = ? and action = ?", current_user.id, user_id, id, 'favorite'])
         # visitor = いいねした人　visited　＝　いいねされた人 post_image = params action = like =>左の条件に当てはまるレコードを引っ張る
         if temp.blank?
             # .blankメソッドは.nil=値, empty=入れ物が空, .blank=値or入れ物が空
