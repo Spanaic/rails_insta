@@ -51,7 +51,24 @@
                       <i class="far fa-compass"></i>
                     <% end %>
                 </li>
-                <li><%= render 'notifications/circle', notifications: @notifications %></li>
+
+                <%# <li><%= render 'notifications/circle', notifications: @notifications %>
+
+                <li class="bell-list-style">
+                  <%= link_to notifications_path do %>
+                    <% if unchecked_notifications.any? %>
+                      <span class="fa-stack">
+                        <i class="fas fa-bell fa-lg fa-stack-2x" style="font-size: 1.5em;"></i>
+                        <i class="fas fa-circle n-circle fa-stack-1x"></i>
+                      </span>
+                    <% else %>
+                        <span>
+                          <i class="fas fa-bell fa-lg" style="font-size: 1.5em;"></i>
+                        </span>
+                    <% end %>
+                  <% end %>
+                </li>
+
                 <li class="list-icon"><%= link_to user_path(current_user.profile_name) do %>
                       <i class="fas fa-user-alt"></i>
                     <% end %>
@@ -76,13 +93,14 @@
     <main class="main-box">
       <%= yield %>
     </main>
+
       <div class="container">
         <footer>
           <nav>
             <% if user_signed_in? %>
-              <ul>
+              <ul class="nav navbar navbar-right">
                 <%# <li><%= link_to "プロフィール編集", edit_user_path(current_user) %>
-                <li><%= link_to destroy_user_session_path, method:  :delete do %>
+                <li class="footer-list-item"><%= link_to destroy_user_session_path, method:  :delete do %>
                       <i class="fas fa-sign-out-alt">ログアウト</i>
                     <% end %>
                 </li>

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
         @user = User.find_by(profile_name: params[:profile_name])
         # params[:id]などの該当する記述（User）を[:name]に書き換える。
         # @reply_user = User.find_by(profile_name: params[:profile_name])
-        @post_images = @user.post_images.page(params[:page]).per(6).reverse_order
+        @post_images = @user.post_images.page(params[:page]).per(9).reverse_order
         # 元々allで変数に代入していたので、kaminari風に変数に値を代入してあげれば、指定した数の表示件数にになる。
     end
 

@@ -47,6 +47,10 @@
 .list-style {
     list-style: none;
 }
+.bell-list-style {
+    font-size: 17px;
+    padding-top: 3px;
+}
 
 // post_images/index
 
@@ -63,7 +67,7 @@
     background-color: #ffffff;
 }
 .profile-image-style {
-    border-radius: 50px;
+    border-radius: 50%;
 }
 .recommend-users-title {
     margin: 5px 0 5px 10px;
@@ -86,3 +90,7 @@
     padding: 10px;
 }
 
+// footer
+.footer-list-item {
+    font-size: 18px;
+}

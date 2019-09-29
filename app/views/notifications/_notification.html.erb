@@ -1,26 +1,31 @@
 <% visitor = notification.visitor_id %>
 <% visited = notification.visited_id %>
-<span>
-    <%= link_to user_path(notification.visitor) do %>
-        <%= "#{notification.visitor.profile_name}さんが" %>
-    <% end %>
-</span>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <span>
+                <%= link_to user_path(notification.visitor.profile_name) do %>
+                    <%= "#{notification.visitor.profile_name}" %>
+                <% end %>
+            </span>
 
-<span>
-    <% case notification.action when 'follow' %>
-        <p>あなたをフォローしました</p>
-    <% when 'favorite' %>
-        <%= link_to "あなたの投稿", post_image_path(notification.post_image_id) %>
-        <span>をいいねしました</span>
-    <% when 'comment' %>
-        <% if notification.post_image.user.id == visited_id %>
-            <%= link_to "あなたの投稿", post_image_path(notification.post_image_id) %>
-        <% else %>
-            <%= link_to "#{visitor.name}さんの投稿", post_image_path(notification.post_images_id) %>
-            <span>にコメントしました</span>
-        <% end %>
-    <% end %>
-    <p><%= PostComment.find_by(id: notification.post_comment_id)&.comment %></p>
-</span>
-
-<%= time_ago_in_words(notification.created_at).upcase %>
+            <span>
+                <% case notification.action when 'follow' %>
+                    <span>さんがあなたをフォローしました</span>
+                <% when 'favorite' %>
+                    <%= link_to "あなたの投稿", post_image_path(notification.post_image_id) %>
+                    <span>をいいねしました</span>
+                <% when 'comment' %>
+                    <% if notification.post_image.user.id == notification.visited_id %>
+                        <%= link_to "あなたの投稿", post_image_path(notification.post_image_id) %>
+                    <% else %>
+                        <%= link_to "#{visitor.name}さんの投稿", post_image_path(notification.post_images_id) %>
+                    <% end %>
+                        <span>にコメントしました</span>
+                <% end %>
+                <p><%= PostComment.find_by(id: notification.post_comment_id)&.comment %></p>
+            </span>
+            <%= time_ago_in_words(notification.created_at).upcase %>
+        </div>
+    </div>
+</div>

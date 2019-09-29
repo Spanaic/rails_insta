@@ -2,40 +2,66 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-md-2"></div>
+        <div class="col-md-2">
             <%# <img src=<%= @user.profile_image_id %>
             <%# facebook認証と同時にプロフィール画像をURLで取得できたけど、
                 条件分岐でattachment_image_tagと切り替えられないと実装できない %>
-            <p><%= attachment_image_tag @user, :profile_image, :fill, 300, 300, fallback: "no_image.jpg", size:'300x300' %></p>
-            <%# ひとまず安牌で↑にしておく。 %>
+            <div class="user-profile-image-box">
+                <%= attachment_image_tag @user, :profile_image, :fill, 150, 150, fallback: "no_image.jpg", size:'150x150', class: "profile-image-style" %>
+                <%# ひとまず安牌で↑にしておく。 %>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="user-profile-box">
+                <div class="user-profile-top-box">
+                    <span><%= @user.profile_name %></span>
 
-            <%= @user.name %>
-
-            <% if current_user != @user %>
-                <% if @user.followed_by?(current_user) %>
-                <%# @userがcurrent_userにフォローされているか確かめる記述。 %>
-                <%# メソッド内で引数を渡すように定義されいてるので、きちんと渡す。 %>
-                    <button type="button" class="btn btn-primary"><%= link_to "フォローをやめる", user_relationships_path(@user.profile_name), method: :delete %></button>
-                <% else %>
-                    <button type="button" class="btn btn-primary"><%= link_to "フォローする", user_relationships_path(@user.profile_name), method: :post %></button>
-                <% end %>
-            <% else %>
-                <button type="button" class="btn btn-secondry"><%= link_to "プロフィールを編集", edit_user_path(params[:profile_name]) %></button>
-                <%# 後でボタンの色を変える %>
-            <% end %>
-
-            <%= link_to "#{@user.followings.count}人をフォロー中", follows_user_path(@user.profile_name) %>
-
-            <%= link_to "フォロワー#{@user.followers.count}人", followers_user_path(@user.profile_name) %>
-
-            <p>投稿<%= @user.post_images.count %>件</p>
-
+                    <% if current_user != @user %>
+                        <% if @user.followed_by?(current_user) %>
+                        <%# @userがcurrent_userにフォローされているか確かめる記述。 %>
+                        <%# メソッド内で引数を渡すように定義されいてるので、きちんと渡す。 %>
+                            <button type="button" class="btn btn-primary"><%= link_to "フォローをやめる", user_relationships_path(@user.profile_name), class: "follow-button", method: :delete %></button>
+                        <% else %>
+                            <button type="button" class="btn btn-primary"><%= link_to "フォローする", user_relationships_path(@user.profile_name), class: "follow-button", method: :post %></button>
+                        <% end %>
+                    <% else %>
+                        <button type="button" class="btn btn-secondry follow-button"><%= link_to "プロフィールを編集", edit_user_path(params[:profile_name]) %></button>
+                        <%# 後でボタンの色を変える %>
+                    <% end %>
+                </div>
+                <div class="user-profile-bottom-box">
+                    <span class="user-profile-bottom-item">投稿<%= @user.post_images.count %>件</span>
+                    <span class="user-profile-bottom-item"><%= link_to "#{@user.followings.count}人をフォロー中", follows_user_path(@user.profile_name) %></span>
+                    <span class="user-profile-bottom-item"><%= link_to "フォロワー#{@user.followers.count}人", followers_user_path(@user.profile_name) %></span>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<%# 下は投稿画面 %>
-<%# bootstrapのテーブルとtabを使って切り替える機能を実装予定
-    保存したshow/post_imagesを集めて呼び出す機能も実装 %>
-<h2>投稿</h2>
-<%= render "post_images/list", post_images: @post_images %>
+    <div class="profile-border-line"></div>
+    <%# 本当はこの下にbootstrapで作成したタブを導入したい %>
+
+    <div class="row">
+            <%# 下は投稿画面 %>
+            <%# bootstrapのテーブルとtabを使って切り替える機能を実装予定
+                保存したshow/post_imagesを集めて呼び出す機能も実装 %>
+            <%# <h2>投稿</h2> %>
+        <%# 他のindexページと同じ表示にしたいならこちら↓↓↓ %>
+        <%# <%= render "post_images/list", post_images: @post_images %>
+        <%# <div class="col-md-1"></div> %>
+        <div class="col-md-12">
+            <div class="user-post-image-box">
+                <% @post_images.each do |post_image| %>
+                    <div class="each-post-image-box">
+                        <%= link_to post_image_path(post_image.id) do %>
+                            <%= attachment_image_tag post_image, :post_image, :fill, 293, 293, format: 'jpeg', class: "each-post-image-box", fallback: 'no_image.jpg', size: "293x293" %>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+        <%# <div class="col-md-1"></div> %>
+    </div>
+    <%= paginate @post_images, class: "paginate" %>
+</div>
