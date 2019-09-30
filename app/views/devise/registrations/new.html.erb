@@ -1,38 +1,119 @@
-<h2>Sign up</h2>
+<div class="container">
+  <div class="row" style="padding: 50px;">
+    <%# <div class="col-md-1"></div> %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <div class="field">
-    <%= f.label :名前 %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+    <div class="col-md-6" style="marign-top: 50px;">
+      <div class="registration-left-box">
+        <div class="registration-image-box">
+          <%# <img src="images/instagram.png" alt=""> %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="registration-right-box">
+        <div class="registration-form-box">
+          <h1>Insta!</h1>
+          <div class="registration-form-small-box">
+            <h2 style="font-size: 17px; font-weight: bold;">友達の写真をチェックしよう</h2>
+
+            <div class="registration-facebook-box">
+                <%- if devise_mapping.omniauthable? %>
+                  <%- resource_class.omniauth_providers.each do |provider| %>
+                    <%= link_to omniauth_authorize_path(resource_name, provider) do %><br />
+                      <button class="facebook-auth">
+                        <span style="margin-bottom: 10px;">Facebookでログイン</span>
+                      </button>
+                    <% end %>
+                  <% end %>
+                <% end %>
+            </div>
+
+            <div class="registration-or-border-line-box">
+              <div class="or-border-line"></div>
+              <div class="or-message">または</div>
+              <div class="or-border-line"></div>
+            </div>
+
+            <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+              <%= render "devise/shared/error_messages", resource: resource %>
+
+              <%# <div class="registration-form-tiny-box"> %>
+                <div class="registration-input-part">
+                  <div class="field">
+                    <%= f.label :名前 %><br />
+                    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+                  </div>
+                </div>
+              <%# </div> %>
+
+              <%# <div class="registration-form-tiny-box"> %>
+                <div class="registration-input-part">
+                   <div class="field">
+                    <%= f.label :ユーザー名 %><br />
+                    <%= f.text_field :profile_name, autofocus: true, autocomplete: "profile_name", placeholder: "半角英数のみ" %>
+                  </div>
+                </div>
+              <%# </div> %>
+
+              <%# <div class="registration-form-tiny-box"> %>
+                <div class="registration-input-part">
+                    <div class="field">
+                      <%= f.label :email %><br />
+                      <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+                    </div>
+                </div>
+              <%# </div> %>
+
+              <%# <div class="registration-form-tiny-box"> %>
+                <div class="registration-input-part">
+                  <div class="field">
+                    <%= f.label :パスワード %>
+                    <% if @minimum_password_length %>
+                    <em>(<%= @minimum_password_length %> 文字以上)</em>
+                    <% end %><br />
+                    <%= f.password_field :password, autocomplete: "new-password" %>
+                  </div>
+                </div>
+
+                <div class="registration-input-part">
+                   <div class="field">
+                    <%= f.label :パスワード（確認用） %><br />
+                    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+                  </div>
+                </div>
+
+              <%# <div class="registration-submit-box"> %>
+                <div class="registration-submit-small-box">
+                  <%= f.submit "Sign up", style: "margin-top: 10px;" %>
+                </div>
+              <%# </div> %>
+            <% end %>
+
+            <p class="registration-policy-box">
+              <span>登録することで開発者の、利用<br></span>
+              <span>規約、データに関するポリシー<br></span>
+              <span>Cookieポリシーに同意するものと<br></span>
+              <span>します。</span>
+            </p>
+
+          </div>
+        </div>
+
+        <div class="registration-login-box">
+          <div class="login-text-box">アカウントをお持ちですか？<%= link_to "ログインする", new_user_session_path %></div>
+        </div>
+
+        <div class="registration-apps-box">
+          <p class="apps-download-text">ダウンロード</p>
+          <div class="apps-image-box">
+            <div class="app-image"></div>
+            <div class="app-image"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# <div class="col-md-1"></div> %>
   </div>
-
-  <div class="field">
-    <%= f.label :ユーザー名 %><br />
-    <%= f.text_field :profile_name, autofocus: true, autocomplete: "profile_name", placeholder: "半角英数のみ" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :パスワード %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> 文字以上)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :パスワード（確認用） %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

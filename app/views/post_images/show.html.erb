@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <div class="row no-gutters">
+    <div class="row no-gutters" style="padding: 5%;">
     <div class="col-md-3"></div>
         <div class="col-md-4">
             <%# <h1>投稿詳細</h1> %>
@@ -64,8 +64,9 @@
                             <%# <%= "#{@post_image.favorites.count}いいね" %>
                         <%# <% end %>
                     <%# <% end %>
-                    <%= render_with_hashtags(@post_image.caption) %>
-
+                    <div class="post-image-caption-box">
+                        <%= render_with_hashtags(@post_image.caption) %>
+                    </div>
                     <%# 非同期を乗っけたパ＝シャルを記述 %>
                     <%# 非同期を乗っけたパーシャルを記述 %>
 
@@ -115,7 +116,7 @@
                     <div class="post-image-profile-edit-box">
                         <%= render 'favorites/favorite', post_image: @post_image %>
                         <% if current_user.profile_name == @post_image.user.profile_name %>
-                            <span><%= link_to "編集", edit_post_image_path(@post_image.id) %></span>
+                            <span><%= link_to "編集", edit_post_image_path(@post_image.id), style: "padding-left: 150px;" %></span>
                             <span><%= link_to "削除", post_image_path(@post_image.id), method:  :delete %></span>
                         <% end %>
                     </div>

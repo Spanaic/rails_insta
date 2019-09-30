@@ -4,7 +4,7 @@ class UsersController < ApplicationController
         # 試しに入れてる記述↓↓↓
         # @post_images = @users.post_images.id.last
         # @notifications = Notification.all
-        @randoms = User.order("RAND()").limit(2)
+        # @randoms = PostImage.order("RANDOM()").limit(9)
     end
 
     def show
@@ -49,6 +49,14 @@ class UsersController < ApplicationController
         @user = User.find_by(profile_name: params[:profile_name])
         # (params[:id])で渡していた部分でエラーが出る可能性有り
         redirect_to user_path(params[:profile_name])
+    end
+
+    def explore
+        @users = User.page(params[:page]).per(5).reverse_order
+        # 試しに入れてる記述↓↓↓
+        # @post_images = @users.post_images.id.last
+        # @notifications = Notification.all
+        @randoms = PostImage.order("RANDOM()").page(params[:page]).per(9).reverse_order
     end
 
     private

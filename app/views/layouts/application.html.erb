@@ -47,7 +47,7 @@
                     <% end %>
                 </li>
 
-                <li class="list-icon"><%= link_to users_path do %>
+                <li class="list-icon"><%= link_to explore_users_path do %>
                       <i class="far fa-compass"></i>
                     <% end %>
                 </li>
@@ -94,21 +94,21 @@
       <%= yield %>
     </main>
 
-      <div class="container">
+    <div class="container" style="padding-bottom: 40px;">
         <footer>
           <nav>
             <% if user_signed_in? %>
-              <ul class="nav navbar navbar-right">
+              <div class="footer-box">
                 <%# <li><%= link_to "プロフィール編集", edit_user_path(current_user) %>
-                <li class="footer-list-item"><%= link_to destroy_user_session_path, method:  :delete do %>
+                <div class="footer-item">©2019 Insta! Demo</div>
+                <div class="footer-item"><%= link_to destroy_user_session_path, method:  :delete do %>
                       <i class="fas fa-sign-out-alt">ログアウト</i>
                     <% end %>
-                </li>
-              </ul>
+                </div>
+              </div>
             <% end %>
           </nav>
         </footer>
       </div>
-    </div>
   </body>
 </html>

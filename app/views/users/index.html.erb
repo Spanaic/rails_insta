@@ -1,8 +1,38 @@
-<% if @search_users %>
-    <%= render 'users/list', users: @search_users %>
-<% else %>
-    <%= render 'users/list', users: @users %>
-<% end %>
-
-<%# ローカル変数をcollectionで渡さない。パーシャル内に記述しているローカル変数に渡してあげる。%>
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 index-users-main-box">
+            <p style="font-weight: bold; padding-top: 10px;">おすすめ</p>
+            <div class="index-users-big-box">
+                <%# <p class="recommend-users-title">おすすめユーザー</%#> %>
+                <% @users.each do |user| %>
+                    <div class="index-users-small-box">
+                        <div class="index-users-item">
+                            <%= link_to user_path(user.profile_name) do %>
+                                <%= attachment_image_tag user, :profile_image, :fill, 40, 40, format: 'jpeg', size: '40x40', fallback: 'no_image.jpg', class: "profile-image-style" %>
+                            <% end %>
+                        </div>
+                        <div class="index-users-item">
+                            <%= link_to user_path(user.profile_name) do %>
+                                <%= user.profile_name %>
+                            <% end %>
+                        </div>
+                        <div class="index-users-item">
+                            <%= link_to user_path(user.profile_name) do %>
+                                <%= "#{user.name}" %>
+                            <% end %>
+                        </div>
+                        <div class="index-users-item all-users-follow-button">
+                            <%= link_to user_path(user.profile_name) do %>
+                                <button><%= link_to "フォローする", user_relationships_path(user.profile_name), method: :post %></button>
+                            <% end %>
+                        </div>
+                　　</div>
+                    <div class="index-users-border-line"></div>
+                <% end %>
+                <%# <%= paginate randoms, class: "paginate" %>
+                <%# order("RAND()").limit()の時はpaginateしなくても表示件数を制御できる %>
+                <%# link_toはinline要素のため(a), doとendで囲むときはブロック要素であるdivタグなどの中に入れなければ、ブロック要素に指定したスタイルが適用されない %>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,6 +6,15 @@
         </div>
 
         <div class="col-md-5">
+            <div class="user-profile-box">
+                <div class="profile-image-box">
+                    <%= attachment_image_tag current_user, :profile_image, :fill, 50,50, format: 'jpeg', class: 'profile-image-style', fallback: 'no_image.jpg', size: '50x50' %>
+                </div>
+                <ul class="profile-name-box">
+                    <li class="user-profile-name"><%= link_to "#{current_user.profile_name}", user_path(current_user.profile_name) %></li>
+                    <li class="user-name"><%= link_to "#{current_user.name}", user_path(current_user.profile_name) %></li>
+                </ul>
+            </div>
             <div class="recommend-users-box">
                 <p class="recommend-users-title">おすすめユーザー</p>
                 <% @randoms.each do |random| %>
@@ -19,8 +28,8 @@
                         </ul>
                     <% end %>
                 <% end %>
-            <%# <%= paginate randoms, class: "paginate" %>
-            <%# order("RAND()").limit()の時はpaginateしなくても表示件数を制御できる %>
+                <%# <%= paginate randoms, class: "paginate" %>
+                <%# order("RAND()").limit()の時はpaginateしなくても表示件数を制御できる %>
             </div>
         </div>
     </div>

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resource :relationships, param: :profile_name, only: [:create, :destroy]
     get :follows, on: :member
     get :followers, on: :member
+    get :explore, on: :collection
 
     # get :pathの名前が入ってる。ネストされているのでpathはfollows_user_path,followers_user_pathとなる
     # resourceの時は:コントローラを指定しているので要注意！

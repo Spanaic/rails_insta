@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="user-profile-box">
+            <div class="user-detail-profile-box">
                 <div class="user-profile-top-box">
                     <span><%= @user.profile_name %></span>
 
@@ -21,9 +21,9 @@
                         <% if @user.followed_by?(current_user) %>
                         <%# @userがcurrent_userにフォローされているか確かめる記述。 %>
                         <%# メソッド内で引数を渡すように定義されいてるので、きちんと渡す。 %>
-                            <button type="button" class="btn btn-primary"><%= link_to "フォローをやめる", user_relationships_path(@user.profile_name), class: "follow-button", method: :delete %></button>
+                            <button type="button" class="btn btn-primary follow-button-box"><%= link_to "フォローをやめる", user_relationships_path(@user.profile_name), class: "follow-button", method: :delete %></button>
                         <% else %>
-                            <button type="button" class="btn btn-primary"><%= link_to "フォローする", user_relationships_path(@user.profile_name), class: "follow-button", method: :post %></button>
+                            <button type="button" class="btn btn-primary follow-button-box"><%= link_to "フォローする", user_relationships_path(@user.profile_name), class: "follow-button", method: :post %></button>
                         <% end %>
                     <% else %>
                         <button type="button" class="btn btn-secondry follow-button"><%= link_to "プロフィールを編集", edit_user_path(params[:profile_name]) %></button>
@@ -63,5 +63,7 @@
         </div>
         <%# <div class="col-md-1"></div> %>
     </div>
-    <%= paginate @post_images, class: "paginate" %>
+    <div style="text-align: center;">
+        <%= paginate @post_images, class: "paginate" %>
+    </div>
 </div>

@@ -58,13 +58,7 @@
     margin: 3% 0 0 10%;
     border: solid 1px rgba(0,0,0,0.1);
     background-color: #ffffff;
-    width: 502px;
-}
-.recommend-users-box {
-    border: solid 1px rgba(0,0,0,0.1);
-    padding: 5px 0;
-    margin: 15% 10% 0 20%;
-    background-color: #ffffff;
+    width: 602px;
 }
 .profile-image-style {
     border-radius: 50%;
@@ -90,7 +84,20 @@
     padding: 10px;
 }
 
-// footer
-.footer-list-item {
+// footerをより良くする
+.footer-box {
+    display: flex;
+    padding-top: 20px;
+}
+.footer-item {
+    width: 170px;
     font-size: 18px;
+}
+.footer-item:first-child {
+    font-size: 12px;
+    padding-top: 5px;
+    margin: 0 30% 0 45%;
+}
+.footer-item:last-child {
+    margin-left: auto;
 }
