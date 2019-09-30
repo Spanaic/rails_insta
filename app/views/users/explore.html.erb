@@ -1,7 +1,7 @@
 <div class="recommend-users-big-box">
     <p style="font-weight: bold;　font-size: 22px;">フォローする人を見つけよう</p>
     <% if @search_users %>
-        <%= render 'users/list', users: @search_users %>
+        <%= render 'users/search', users: @search_users %>
     <% else %>
         <%= render 'users/list', users: @users %>
     <% end %>

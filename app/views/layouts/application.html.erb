@@ -37,7 +37,7 @@
             <ul class="nav navbar-nav">
               <% if user_signed_in? %>
                 <li class="search-box">
-                  <%= search_form_for @search, url: users_path do |f| %>
+                  <%= search_form_for @search, url: explore_users_path do |f| %>
                     <%= f.text_field :name_or_profile_name_cont, placeholder: '名前orユーザー名を入力...' %>
                     <%= f.submit ("検索する") %>
                   <% end %>
