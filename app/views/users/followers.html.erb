@@ -1,17 +1,68 @@
-<% @followers.each do |follower| %>
-    <%= follower.name %>
+<%# <% @followers.each do |follower| %>
+    <%# <%= follower.name %>
     <%# followerは元々Userモデルのレコード情報を持っているため、userモデルを指定しなくても、直接レコード内のカラムを呼び出せる %>
 
-    <%= follower.profile_name %>
+    <%# <%= follower.profile_name %>
 
-    <%= "投稿#{follower.post_images.count}件" %>
+    <%# <%= "投稿#{follower.post_images.count}件" %>
 
-    <% if current_user == follower %>
-    <% else %>
-        <% if follower.followed_by?(current_user) %>
-            <button type="button" class="btn btn-primary"><%= link_to "フォローをやめる", user_relationships_path(@user.id), method: :delete %></button>
-        <% else %>
-            <button type="button" class="btn btn-primary"><%= link_to "フォローする", user_relationships_path(@user.id), method: :post %></button>
-        <% end %>
-    <% end %>
-<% end %>
+    <%# <% if current_user == follower %>
+    <%# <% else %>
+        <%# <% if follower.followed_by?(current_user) %>
+            <%# <button type="button" class="btn btn-primary"><%= link_to "フォローをやめる", user_relationships_path(@user.id), method: :delete</button> %>
+        <%# <% else %>
+            <%# <button type="button" class="btn btn-primary"><%= link_to "フォローする", user_relationships_path(@user.id), method: :post</button> %>
+        <%# <% end %>
+    <%# <% end %>
+<%# <% end %>
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 index-users-main-box">
+            <p style="font-weight: bold; padding-top: 10px;">フォロワー</p>
+            <div class="index-users-big-box">
+                <%# <p class="recommend-users-title">おすすめユーザー</%#> %>
+                <% @followers.each do |follower| %>
+                    <div class="index-users-small-box">
+                        <div class="index-users-item">
+                            <%= link_to user_path(follower.profile_name) do %>
+                                <%= attachment_image_tag follower, :profile_image, :fill, 40, 40, format: 'jpeg', size: '40x40', fallback: 'no_image.jpg', class: "profile-image-style" %>
+                            <% end %>
+                        </div>
+                        <div class="index-users-item">
+                            <%= link_to user_path(follower.profile_name) do %>
+                                <%= follower.profile_name %>
+                            <% end %>
+                        </div>
+                        <div class="index-users-item">
+                            <%= link_to user_path(follower.profile_name) do %>
+                                <%= "#{follower.name}" %>
+                            <% end %>
+                        </div>
+
+                        <div class="index-users-item all-users-follow-button">
+                            <% if current_user == follower %>
+                            <% else %>
+                                <% if follower.followed_by?(current_user) %>
+                                    <%# <%= link_to user_path(follower.profile_name) do %>
+                                        <button><%= link_to "フォローする", user_path(follower.profile_name) %></button>
+                                    <%# <% end %>
+                                <% else %>
+                                        <button>フォロー済み</button>
+                                <% end %>
+                            <% end %>
+                        </div>
+                        <%# フォローするの条件分岐が入っていない %>
+                　　</div>
+                    <div class="index-users-border-line"></div>
+                <% end %>
+                <%# <%= paginate randoms, class: "paginate" %>
+                <%# order("RAND()").limit()の時はpaginateしなくても表示件数を制御できる %>
+                <%# link_toはinline要素のため(a), doとendで囲むときはブロック要素であるdivタグなどの中に入れなければ、ブロック要素に指定したスタイルが適用されない %>
+            </div>
+        </div>
+    </div>
+</div>

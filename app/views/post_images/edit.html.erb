@@ -1,16 +1,75 @@
-<h1>投稿編集</h1>
+<%# <h1>投稿編集</h1>
 
 <%= form_for(@post_image) do |f| %>
-    <%= render "post_images/error_messages", post_image: @post_image %>
+    <%# <%= render "post_images/error_messages", post_image: @post_image %>
 
-    <p>現在の画像はこちら</p>
-    <%= attachment_image_tag @post_image, :post_image, :fill, 480, 270 %>
+    <%# <p>現在の画像はこちら</p> %>
+    <%# <%= attachment_image_tag @post_image, :post_image, :fill, 480, 270 %>
 
-    <p>画像を変更しよう！</p>
-    <%= f.attachment_field :post_image %>
+    <%# <p>画像を変更しよう！</p> %>
+    <%# <%= f.attachment_field :post_image %>
 
-    <p>変更した画像について教えてくれる？</p>
-    <%= f.text_area :caption, placeholder: "#{@post_image.caption}" %>
+    <%# <p>変更した画像について教えてくれる？</p> %>
+    <%# <%= f.text_area :caption, placeholder: "#{@post_image.caption}" %>
 
-    <%= f.submit "変更完了！" %>
-<% end %>
+    <%# <%= f.submit "変更完了！" %>
+<%# <% end %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        <div class="registration-right-box" style="margin: 0 auto; padding: 40px 0;">
+            <div class="edit-post-image-form-box">
+            <h1>Insta!</h1>
+            <div class="registration-form-small-box" style="padding-bottom: 20px;">
+                <h2 style="font-size: 17px; font-weight: bold;">現在の投稿画像</h2>
+
+
+                <div class="user-detail-profile-box">
+                    <%# <div class="user-profile-top-box"> %>
+                        <div class="edit-post-image-box">
+                            <div><%= attachment_image_tag @post_image, :post_image, :fill, 480, 270 %></div>
+                            <%# ひとまず安牌で↑にしておく。 %>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="registration-or-border-line-box">
+                <div class="or-border-line"></div>
+                <div class="or-message">編集</div>
+                <div class="or-border-line"></div>
+                </div>
+
+                <%= form_for(@post_image) do |f| %>
+                <%= render "post_images/error_messages", post_image: @post_image %>
+
+                    <div class="registration-input-part">
+                    <div class="field">
+                        <%= f.label :post_image %><br />
+                        <%= f.attachment_field :post_image, style: "margin: 0 auto;" %>
+                    </div>
+                    </div>
+
+                <%# <div class="registration-form-tiny-box"> %>
+                    <div class="registration-input-part">
+                        <div class="field">
+                        <%= f.label :caption %><br />
+                        <%= f.text_area :caption, autofocus: true, autocomplete: "introduction" %>
+                        </div>
+                    </div>
+                <%# </div> %>
+
+                <%# <div class="registration-submit-box"> %>
+                    <div class="registration-submit-small-box">
+                    <%= f.submit "送信する", style: "margin-top: 10px;" %>
+                    </div>
+                <%# </div> %>
+                <% end %>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

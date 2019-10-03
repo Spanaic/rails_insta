@@ -1,20 +1,77 @@
-<h1>ユーザー情報編集</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        <div class="registration-right-box" style="margin: 0 auto; padding: 40px 0;">
+            <div class="registration-form-box">
+            <h1>Insta!</h1>
+            <div class="registration-form-small-box" style="padding-bottom: 20px;">
+                <h2 style="font-size: 17px; font-weight: bold;">現在のユーザー情報</h2>
 
-<%= form_for(@user) do |f| %>
-<%= render "users/error_messages", user: @user %>
-<%# Userモデルにバリデーションを設定してない %>
 
-    <p>現在のプロフィール写真はこちら</p>
-    <%= attachment_image_tag @user, :profile_image, fallback: "no_image.jpg" %>
+                <div class="user-detail-profile-box">
+                    <div class="user-profile-top-box">
+                        <div class="edit-user-profile-image-box">
+                            <div><%= attachment_image_tag @user, :profile_image, :fill, 50, 50, fallback: "no_image.jpg", size:'50x50', class: "profile-image-style" %></div>
+                            <%# ひとまず安牌で↑にしておく。 %>
+                            <p style="margin: 0 auto;"><%= @user.profile_name %></p>
+                        </div>
+                    </div>
+                </div>
 
-    <p>君のプロフィール写真を登録してね！</p>
-    <%= f.attachment_field :profile_image %>
 
-    <p>ユーザー名（ユーザに公開される名前）</p>
-    <%= f.text_field :profile_name %>
 
-    <p>自己紹介を書いてね！</p>
-    <%= f.text_area :introduction %>
+                <div class="registration-or-border-line-box">
+                <div class="or-border-line"></div>
+                <div class="or-message">編集</div>
+                <div class="or-border-line"></div>
+                </div>
 
-    <%= f.submit "登録完了！" %>
-<% end %>
+                <%= form_for(@user) do |f| %>
+                <%= render "users/error_messages", user: @user %>
+
+                    <div class="registration-input-part">
+                    <div class="field">
+                        <%= f.label :profile_image %><br />
+                        <%= f.attachment_field :profile_image, style: "margin: 0 auto;" %>
+                    </div>
+                    </div>
+
+                <%# <div class="registration-form-tiny-box"> %>
+                    <div class="registration-input-part">
+                    <div class="field">
+                        <%= f.label :名前 %><br />
+                        <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+                    </div>
+                    </div>
+                <%# </div> %>
+
+                <%# <div class="registration-form-tiny-box"> %>
+                    <div class="registration-input-part">
+                    <div class="field">
+                        <%= f.label :ユーザー名 %><br />
+                        <%= f.text_field :profile_name, autofocus: true, autocomplete: "profile_name", placeholder: "半角英数のみ" %>
+                    </div>
+                    </div>
+                <%# </div> %>
+
+                <%# <div class="registration-form-tiny-box"> %>
+                    <div class="registration-input-part">
+                        <div class="field">
+                        <%= f.label :introduction %><br />
+                        <%= f.text_area :introduction, autofocus: true, autocomplete: "introduction" %>
+                        </div>
+                    </div>
+                <%# </div> %>
+
+                <%# <div class="registration-submit-box"> %>
+                    <div class="registration-submit-small-box">
+                    <%= f.submit "送信する", style: "margin-top: 10px;" %>
+                    </div>
+                <%# </div> %>
+                <% end %>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

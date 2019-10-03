@@ -1,18 +1,37 @@
-<%# <% provide(:title, @tag.hashname) %>
-<%# 参考にしたURLの筆者のコード上必要だったため記述されていた %>
-<%# provideメソッドは(:指定した値, 表示したい変数や値)指定した値に変数を代入させる事ができる。 %>
-<%# provideメソッドはview内で記述する。
-変数を至るところで記述するよりも、変数の変更を反映させる時に一つの変数を変更するだけで済むため便利かも。 %>
-    <%# <%= image_tag("hashtag.png") %>
-    <%= @tag.hashname %>
-        <%# <%= render 'users/follow_form' %>
-        <%# <%= render 'shared/usr_info_default' %>
-        <%# <%= render 'shared/stats_default' %>
-    <% @post_image.each do |post_image| %>
-        <%= attachment_image_tag post_image, :post_image, :fill, 300, 300, format: 'jpeg' %>
-        <%# # 多分validation掛けてるからfallbackすることはない, fallback: 'no_image.jpg', size: '300x300' %>
-        <%= "#{post_image.favorites.count}いいね" %>
-        <%= "#{post_image.post_comments.count}件のコメント"%>
-        <%# 良いねとコメントの表示をアイコンに変える %>
-    <% end %>
-        <%# <%= render @post_image %>
+                        <%# <% provide(:title, @tag.hashname) %>
+                        <%# 参考にしたURLの筆者のコード上必要だったため記述されていた %>
+                        <%# provideメソッドは(:指定した値, 表示したい変数や値)指定した値に変数を代入させる事ができる。 %>
+                        <%# provideメソッドはview内で記述する。
+                        変数を至るところで記述するよりも、変数の変更を反映させる時に一つの変数を変更するだけで済むため便利かも。 %>
+                            <%# <%= image_tag("hashtag.png") %>
+    <%# <%= @tag.hashname %>
+                        <%# <%= render 'users/follow_form' %>
+                        <%# <%= render 'shared/usr_info_default' %>
+                        <%# <%= render 'shared/stats_default' %>
+    <%# <% @post_image.each do |post_image| %>
+        <%# <%= attachment_image_tag post_image, :post_image, :fill, 300, 300, format: 'jpeg' %>
+                        <%# # 多分validation掛けてるからfallbackすることはない, fallback: 'no_image.jpg', size: '300x300' %>
+        <%# <%= "#{post_image.favorites.count}いいね" %>
+        <%# <%= "#{post_image.post_comments.count}件のコメント"%>
+                        <%# 良いねとコメントの表示をアイコンに変える %>
+    <%# <% end %>
+                        <%# <%= render @post_image %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="user-post-image-box">
+                <p><span class="hashtag-name">#<%= @tag.hashname %></span></p>
+                <p><span class="hashtag-count">投稿<%= @tag.post_images.count %>件</span></p>
+                <% @post_image.each do |post_image| %>
+                    <div class="each-post-image-box">
+                        <%= link_to post_image_path(post_image.id) do %>
+                            <%= attachment_image_tag post_image, :post_image, :fill, 293, 293, format: 'jpeg', class: "each-post-image-box", fallback: 'no_image.jpg', size: "293x293" %>
+                        <% end %>
+                    </div>
+                <% end %>
+                <p><%= paginate @post_image, class: "paginate" %></p>
+            </div>
+        </div>
+    </div>
+</div>

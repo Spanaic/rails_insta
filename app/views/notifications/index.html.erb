@@ -1,8 +1,18 @@
-<% notifications = @notifications.where.not(visitor: current_user.id) %>
-<% if notifications.exists? %>
-    <%= render partial: 'notification', collection: notifications %>
-    <%# renderする時にcollection:オプションを使うと,複数のインスタンスをパーシャル上で単数のインスタンスとして呼び出すことができるようになる %>
-    <%= paginate notifications, class: "paginate" %>
-<% else %>
-    <p>通知はありません</p>
-<% end %>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="notification-box">
+                <% notifications = @notifications.where.not(visitor_id: current_user.id) %>
+                <% if notifications.exists? %>
+                    <%= render partial: 'notification', collection: notifications %>
+                    <%# renderする時にcollection:オプションを使うと,複数のインスタンスをパーシャル上で単数のインスタンスとして呼び出すことができるようになる %>
+                    <%= paginate notifications, class: "paginate" %>
+                <% else %>
+                    <p>通知はありません</p>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%# 通知がありませんの条件分岐が機能していないか、checkedの記述が間違えている可能性あり %>

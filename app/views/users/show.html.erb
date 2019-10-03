@@ -26,7 +26,7 @@
                             <button type="button" class="btn btn-primary follow-button-box"><%= link_to "フォローする", user_relationships_path(@user.profile_name), class: "follow-button", method: :post %></button>
                         <% end %>
                     <% else %>
-                        <button type="button" class="btn btn-secondry follow-button"><%= link_to "プロフィールを編集", edit_user_path(params[:profile_name]) %></button>
+                        <button type="button" class="btn btn-default follow-button-box"><%= link_to "プロフィールを編集", edit_user_path(params[:profile_name]), class: "profile-edit-button" %></button>
                         <%# 後でボタンの色を変える %>
                     <% end %>
                 </div>

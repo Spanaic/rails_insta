@@ -23,7 +23,11 @@
                             <li class="list-style">
                                 <span><%= attachment_image_tag random, :profile_image, :fill, 40, 40, format: 'jpeg', size: '40x40', fallback: 'no_image.jpg', class: "profile-image-style" %></span>
                                 <span><%= random.profile_name %></span>
-                                <span class="float-right"><%= link_to "フォローする", user_relationships_path(random.profile_name), method: :post %></span>
+                                <% if random.followed_by?(current_user) %>
+                                    <span><%= link_to "フォローをやめる", user_relationships_path(random.profile_name), method: :delete %></span>
+                                <% else %>
+                                    <span class="float-right"><%= link_to "フォローする", user_relationships_path(random.profile_name), method: :post %></span>
+                                <% end %>
                             </li>
                         </ul>
                     <% end %>
