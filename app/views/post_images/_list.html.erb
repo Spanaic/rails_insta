@@ -1,4 +1,3 @@
-
 <% post_images.each do |post_image| %>
     <div class="post-images-index-box">
         <% if user_signed_in? %>
@@ -17,8 +16,8 @@
                 <p><%= attachment_image_tag post_image, :post_image, :fill, 600, 600, format: 'jpeg' %></p>
             <% end %>
 
-            <%# 非同期を乗っけたパ＝シャルを記述 %>
-            <div class="favorite-box">
+            <%# 非同期を乗っけたパーシャルを記述 %>
+            <div id="favorite-button-<%= post_image.id %>">
                 <%= render 'favorites/favorite', post_image: post_image %>
             </div>
             <%# レンダーに渡す変数は、アクションメソッドで定義した変数以外にもただの数字や、.eachで切り分けたブロック変数も代入することができる。%>

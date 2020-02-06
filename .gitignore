@@ -32,3 +32,6 @@
 
 # Ignore SSL
 /config/certs/*
+
+/.env
+/MEMO.md

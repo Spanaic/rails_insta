@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="post-image-profile-edit-box">
-                        <%= render 'favorites/favorite', post_image: @post_image %>
+                        <span id="favorite-button-<%=@post_image.id %>"><%= render 'favorites/favorite', post_image: @post_image %></span>
                         <% if current_user.profile_name == @post_image.user.profile_name %>
                             <span><%= link_to "編集", edit_post_image_path(@post_image.id), style: "padding-left: 150px;" %></span>
                             <span><%= link_to "削除", post_image_path(@post_image.id), method:  :delete %></span>

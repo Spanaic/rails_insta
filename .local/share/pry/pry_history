@@ -1,0 +1,214 @@
+exit
+User.all
+EndUser.first
+EndUser.all
+EndUser.first
+exit
+EndUser.first
+EndUser.all
+exit
+EndUser.all
+exit
+PostImage.all
+exit
+PostImage.all
+exit
+PostImage.all
+EndUser.all
+exit
+PostImage.all
+Rails.root.join('public', 'post' + . + 'jpg')
+Rails.root.join('public', 'post','+', 'jpg')
+Rails.root.join('public', 'post','.', 'jpg')
+a = 'a' + '.' + 'jpg'
+params
+uploaded.file
+uploaded_file
+params
+post_image.image_name
+image.image_name
+params[:post_image][:image_name]
+uploaded_file.original_filename
+uploaded_file.original_filename.split('.'
+  uploaded_file.original_filename.split('.')
+uploaded_file.original_filename.split(".")
+a = uploaded_file.original_filename.split(".")
+file_name = params[:post_image][:image_name] + . + ext[1]
+file_name = params[:post_image][:image_name] +"." + ext[1]
+file_name = params[:post_image][:image_name] +"." + a[1]
+exit
+EndUser.all
+PostImage.all
+exit
+params
+next
+exit
+PostImage.all
+a = PostImage.find(1)
+a.destroy
+PostImage.all
+a.destroy
+PostImage.all
+a = PostImage.find(2)
+a.destroy
+exit
+PostComment.all
+exit
+Favorite.all
+PostComment.all
+exit
+a PostComment.all
+a = PostComment.all
+rails db:migrate:reset
+exitt
+rails db:migrata:reset
+exit
+PostImage.all
+PostComment.all
+PostImage.all
+PostComment.all
+Favorite.all
+User.all
+EndUser.all
+EndUser.first
+exit
+EndUser.first
+exit
+EndUser.all
+exit
+EndUser.all
+exit
+EndUser.all
+exit
+Favorite.delete_all
+exit
+Favorite.all
+Favorite.count
+Favorite.delete_all
+exit
+Favorite.all
+Relationship.all
+rails c
+user = 1
+follow = user.active_relationships.build(following_id: 1, follower_id: 6)
+follow = user.active_relationships.build(following_id: 1, follower_id: 6)        follow = current_user.active_relationships.build(following_id: current_user.id, follower_id: @user.id)
+follow = user.active_relationships.build(following_id: 1, follower_id: 6)
+params
+exit
+Relationship.all
+exit
+Relationship.all
+a = Relationship.all
+a.destroy_all
+Relationship.all
+a = Relationship.all
+a.destroy_all
+Relationship.all
+Relationship.find(8)
+Relationship.all
+a = Relationship.all
+a.destory_all
+a.delete_all
+a = Relationship.all
+exit
+Favorite
+Favorite.all
+a = Favorite.all
+a.delete_all
+Favorite.all
+Relationship.all
+a = Relationship.all
+a.delete_all
+a = Relationship.all
+Notification.all
+exit
+EndUser.all
+a = EndUser.find_by(email: do@gmail.com)
+EndUser.first
+EndUser.all
+a = EndUser.find(2)
+a.delete
+exit
+EndUser.all
+a = EndUser.all
+a.delete_all
+exit
+EndUser.first
+exit
+EndUser.first
+EndUser.first.notifications
+EndUser.first.passive_notifications
+EndUser.first.passive_notifications.visitor
+EndUser.first.passive_notifications.visitor_id
+EndUser.first.passive_notifications.first.visitor_id
+exit
+a = Favorite.all
+a.delete_all
+Favorite.where(end_user_id: EndUser.find_by(profile_name: 'dododo').id)
+Favorite.where(end_user_id: EndUser.find_by(profile_name: 'dododo').id).delete_all
+Favorite.where(end_user_id: EndUser.find_by(profile_name: 'dododo').id)
+Favorite.where(end_user_id: EndUser.find_by(profile_name: 'dontdont').id)
+Favorite.where(end_user_id: EndUser.find_by(profile_name: 'dontdont').id).count
+Favorite.where(end_user_id: EndUser.find_by(profile_name: 'dontdont').id).delete_all
+a = Favorite.aa
+b = Favorite.all
+Favorite.all
+Favorite.where(end_user_id: EndUser.find_by(profile_name: 'dontdont').id).count
+a = Favorite.all
+a.delete_all
+Favorite.al
+Favorite.all
+Notification.last
+exit
+Hashtag.all
+a = PostImage.where(title: "a").where(title: "c")
+a
+a = PostImage.where(title: "a").or.where(title: "c")
+a = PostImage.where(title: "a").or(PostImage.where(caption: "a"))
+a = PostImage.where(title: "a").or(PostImage.where(caption: "d"))
+Notification.last
+Notification.first
+exit 
+a = Favorite.all
+a.delete_all
+a = Favorite.all
+Favorite.all
+a =Favorite.aa
+a =Favorite.all
+a.delete_all
+exit
+Relationship.all
+Notification.all
+Notification.where(checked: false).count
+Notification.end_users.find(1).where(checked: false).count
+a = EndUser.find(1)
+a.notifications.all
+exit
+Notification.find(71)
+Notification.first
+a = Favorite.aal
+a = Favorite.all
+Favorite.all
+a = Favorite.all
+a.delete_all
+b =  PostComment.all
+b.delete_all
+exit
+a = PostImage.fine(7)
+PostImage.all
+PostComment.all
+exit
+PostComment.all
+PostImage.all
+PostComment.all
+EndUser.where(email: dont@gmail.com)
+EndUser.where(email: "dont@gmail.co"m)
+EndUser.where(email: "dont@gmail.com")
+EndUser.first
+EndUser.last
+EndUser.last.delete
+EndUser.last
+EndUser.last.delete
+EndUser.last
+EndUser.last.delete
+exit

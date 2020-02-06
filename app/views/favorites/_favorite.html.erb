@@ -1,11 +1,12 @@
-
-
 <% if post_image.favorited_by?(current_user) %>
-    <%= link_to post_image_favorites_path(post_image.id), id: 'favorite-button', method: :delete, remote: true do %>
+    <%= link_to post_image_favorites_path(post_image.id), method: :delete, remote: true do %>
         <i class="fas fa-heart heart-style"></i>
         <%# image_tag('source')で出力できる。.svgは点の座標とそれを結ぶ線でなどの数値データを元に作成された画像ファイル。 %>
         <%# .svgは拡大収縮されても画像が劣化せず、レスポンシブなデザインにも対応する %>
         <%# remote: true　＝＞　オプションをlink_toやform_forに入れると、リクエストでHTMLではなくJSONを要求する %>
+        <%# idを部分テンプレート内に設置すると、jsファイルのrenderより、部分テンプレートの内側にもう一つの部分テンプレートを作成することになる %>
+        <%# NG例：link_to post_image_favorites_path(post_image.id), id: "favorite-button", method: :delete, remote: true do %>
+        <%# 正しくはこの部分テンプレートの呼び出し元のページのrenderの記述をtagで囲ってidを指定する %>
     <% end %>
         <p>
             <%= link_to "#{post_image.favorites.first.user.profile_name}", user_path(post_image.favorites.first.user.profile_name) %>
@@ -14,7 +15,7 @@
         </p>
         <%# モデル内でcounter_cache: :favorites_countの値を取得して表示する。途中から導入すると数の整合性が取れなくなる可能性あり %>
 <% else %>
-    <%= link_to post_image_favorites_path(post_image.id), id: 'favorite-button', method: :post, remote: true do %>
+    <%= link_to post_image_favorites_path(post_image.id), method: :post, remote: true do %>
         <i class="far fa-heart heart-empty-style"></i>
         <%# <%= image_tag('icon_heart.svg') %>
     <%# <% end %>
@@ -22,5 +23,3 @@
     <% end %>
 
 <% end %>
-
-

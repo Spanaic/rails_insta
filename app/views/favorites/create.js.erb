@@ -1,1 +1,6 @@
-$("#favorite-button").html("<%= j(render partial: 'favorite', locals: { post_images: @post_images, favorites: @favorites, post_image: @post_image}) %>")
+$("#favorite-button-<%= @post_image.id %>").html("<%= j(render partial: 'favorite', locals: { post_images: @post_images, favorites: @favorites, post_image: @post_image}) %>")
+
+<%# jsファイルのlocals:に渡されている変数はコントローラから直接渡されている。（viewやrenderから渡されているわけではないので要注意！！！） %>
+<%# idで指定したtag上にrenderされるので、idの指定箇所に要注意 %>
+<%# idを動的なデータとして扱うために、.erb内であれば数字の代わりに<%= 変数.id%><%# などで値を与えて上げると良い %>
+<%# .eachするとidもすべて同じ値を指定してしまうため、どれをレンダーしたら良いかわからなくなってしまう %>

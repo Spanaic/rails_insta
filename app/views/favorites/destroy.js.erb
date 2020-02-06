@@ -1,4 +1,4 @@
-$("#favorite-button").html("<%= j(render partial: 'favorite', locals: {favorites: @favorites, post_images: @post_images,post_image: @post_image}) %>")
+$("#favorite-button-<%= @post_image.id %>").html("<%= j(render partial: 'favorite', locals: {favorites: @favorites, post_images: @post_images,post_image: @post_image}) %>")
 <%# #の後になんの値が入っているの？ => idが入っている %>
 <%# 中括弧や（）はキチンとルールに沿って記述をする必要があるので、syntax errorの時は要注意 %>
 <%# viewのエラー表示も参照することでerror箇所の早期発見につながる %>
