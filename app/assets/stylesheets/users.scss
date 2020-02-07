@@ -141,7 +141,7 @@
 .registration-image-box {
     width: 454px;
     height: 618px;
-    background-image: url(instagram_top.png);
+    background-image: url("/images/instagram_top.png");
     margin-top: 50px;
 }
 .registration-right-box {
@@ -196,14 +196,14 @@
     height: 32px;
 }
 .app-image:first-child {
-    background-image: url(app_store.png);
+    background-image: url("/images/app_store.png");
     // background-size: cover;
     // width: 112px;
     // height: 32px;
     margin-right: 5px;
 }
 .app-image:last-child {
-    background-image: url(google_play.png);
+    background-image: url("/images/google_play.png");
     // background-size: cover;
     // width: 112px;
     // height: 32px;
